@@ -9,7 +9,7 @@ setup(
     license='GPL3',
     #url='http://pypi.python.org/pypi/django-logentry-admin/',
     description='Add Django LogEntries the the Django admin site',
-    long_description=open('README.txt').read(),
+    long_description=open('README.rst').read(),
     install_requires=[
         'Django >= 1.1.1',
     ],
