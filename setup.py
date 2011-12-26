@@ -4,7 +4,7 @@ setup(
     name='django-logentry-admin',
     author='Yuri Prezument',
     author_email='y@yprez.com',
-    version='0.1dev',
+    version='0.1.0dev',
     packages=['logentry_admin'],
     license='LICENSE.txt',
     url='https://github.com/yprez/django-logentry-admin',
