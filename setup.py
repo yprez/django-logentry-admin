@@ -11,6 +11,6 @@ setup(
     description='Add Django LogEntries the the Django admin site',
     long_description=open('README.rst').read(),
     install_requires=[
-        'Django >= 1.1.1',
+        'Django >= 1.3',
     ],
 )
