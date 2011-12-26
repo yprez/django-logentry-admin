@@ -12,5 +12,10 @@ Based on: `Django snippet 2484 <http://djangosnippets.org/snippets/2484/>`_
 Installation
 ============
 
-1. Add 'logentry_admin' to installed_apps.
-2. That's it
+To install this application into your project, just add it to your
+``INSTALLED_APPS`` setting:
+
+    INSTALLED_APPS = (
+        ...
+        'logentry_admin',
+    )
