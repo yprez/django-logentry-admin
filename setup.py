@@ -7,7 +7,7 @@ setup(
     version='0.0.1dev',
     packages=['logentry_admin'],
     license='LICENSE.txt',
-    #url='http://pypi.python.org/pypi/django-logentry-admin/',
+    url='https://github.com/yprez/django-logentry-admin',
     description='Add Django LogEntries the the Django admin site',
     long_description=open('README.rst').read(),
     install_requires=[
