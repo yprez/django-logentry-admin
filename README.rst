@@ -13,7 +13,7 @@ Installation
 ============
 
 To install this application into your project, just add it to your
-``INSTALLED_APPS`` setting:
+``INSTALLED_APPS`` setting::
 
     INSTALLED_APPS = (
         ...
