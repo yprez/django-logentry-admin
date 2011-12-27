@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 class LogEntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'action_time'
 
-    readonly_fields = LogEntry._meta.get_all_field_names()
+    readonly_fields = LogEntry._meta.get_all_field_names() + ['object_link']
 
     list_filter = [
         'user',
