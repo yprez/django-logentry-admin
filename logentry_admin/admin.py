@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.contrib.admin.models import LogEntry, DELETION
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.utils.html import escape
 from django.core.urlresolvers import reverse
 
@@ -7,7 +7,8 @@ from django.core.urlresolvers import reverse
 class LogEntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'action_time'
 
-    readonly_fields = LogEntry._meta.get_all_field_names() + ['object_link']
+    readonly_fields = LogEntry._meta.get_all_field_names() + \
+                      ['object_link', 'action_description']
 
     list_filter = [
         'user',
@@ -26,6 +27,7 @@ class LogEntryAdmin(admin.ModelAdmin):
         'content_type',
         'object_link',
         'action_flag',
+        'action_description',
         'change_message',
     ]
 
@@ -52,5 +54,14 @@ class LogEntryAdmin(admin.ModelAdmin):
     object_link.allow_tags = True
     object_link.admin_order_field = 'object_repr'
     object_link.short_description = u'object'
+
+    def action_description(self, obj):
+        action_names = {
+            ADDITION: 'Addition',
+            DELETION: 'Deletion',
+            CHANGE: 'Change',
+        }
+        return action_names[obj.action_flag]
+    action_description.short_description = 'Action'
 
 admin.site.register(LogEntry, LogEntryAdmin)
