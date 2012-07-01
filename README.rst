@@ -16,7 +16,7 @@ Install by using pip or easy_install::
 
   pip install logentry_admin
 
-Or install from source:
+Or install from source::
 
     git clone git@github.com:yprez/django-logentry-admin.git
     cd django-logentry-admin
