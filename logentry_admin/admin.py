@@ -2,6 +2,31 @@ from django.contrib import admin
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.utils.html import escape
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.admin import SimpleListFilter
+
+
+action_names = {
+    ADDITION: _('Addition'),
+    DELETION: _('Deletion'),
+    CHANGE: _('Change'),
+}
+
+
+class ActionListFilter(SimpleListFilter):
+    title = _('Action')
+    parameter_name = 'action_flag'
+
+    def lookups(self, request, model_admin):
+        return action_names.items()
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(
+                action_flag=self.value()
+            )
+        else:
+            return queryset
 
 
 class LogEntryAdmin(admin.ModelAdmin):
@@ -13,7 +38,7 @@ class LogEntryAdmin(admin.ModelAdmin):
     list_filter = [
         'user',
         'content_type',
-        'action_flag'
+        ActionListFilter
     ]
 
     search_fields = [
@@ -55,12 +80,8 @@ class LogEntryAdmin(admin.ModelAdmin):
     object_link.short_description = u'object'
 
     def action_description(self, obj):
-        action_names = {
-            ADDITION: 'Addition',
-            DELETION: 'Deletion',
-            CHANGE: 'Change',
-        }
         return action_names[obj.action_flag]
     action_description.short_description = 'Action'
+
 
 admin.site.register(LogEntry, LogEntryAdmin)
