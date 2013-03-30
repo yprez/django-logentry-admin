@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
@@ -30,6 +31,26 @@ class ActionListFilter(admin.SimpleListFilter):
             return queryset
 
 
+class UserListFilter(admin.SimpleListFilter):
+    title = _('staff user')
+    parameter_name = 'user'
+
+    def lookups(self, request, model_admin):
+        staff = get_user_model().objects.filter(is_staff=True)
+        return (
+            (s.id, force_text(s))
+            for s in staff
+        )
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(
+                user_id=self.value(), user__is_staff=True
+            )
+        else:
+            return queryset
+
+
 class LogEntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'action_time'
 
@@ -56,7 +77,7 @@ class LogEntryAdmin(admin.ModelAdmin):
     )
 
     list_filter = [
-        'user',
+        UserListFilter,
         'content_type',
         ActionListFilter
     ]
