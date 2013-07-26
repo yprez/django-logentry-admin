@@ -14,7 +14,7 @@ Installation
 
 Install by using pip or easy_install::
 
-  pip install logentry_admin
+  pip install logentry_admin ### correction : pip install django-logentry-admin
 
 Or install from source::
 
