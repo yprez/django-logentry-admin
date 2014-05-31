@@ -69,11 +69,16 @@ class LogEntryAdmin(admin.ModelAdmin):
             link = escape(obj.object_repr)
         else:
             ct = obj.content_type
-            link = u'<a href="%s">%s</a>' % (
-                reverse('admin:%s_%s_change' % (ct.app_label, ct.model),
-                        args=[obj.object_id]),
-                escape(obj.object_repr),
-            )
+            try:
+                link = u'<a href="%s">%s</a>' % (
+                    reverse(
+                        'admin:%s_%s_change' % (ct.app_label, ct.model),
+                        args=[obj.object_id]
+                    ),
+                    escape(obj.object_repr),
+                )
+            except:
+                link = escape(obj.object_repr)
         return link
     object_link.allow_tags = True
     object_link.admin_order_field = 'object_repr'
