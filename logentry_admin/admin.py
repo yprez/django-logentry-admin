@@ -1,11 +1,10 @@
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
-from django.utils.html import escape
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.utils.encoding import force_text
+from django.utils.html import escape
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.admin import SimpleListFilter
 
 
 action_names = {
@@ -15,7 +14,7 @@ action_names = {
 }
 
 
-class ActionListFilter(SimpleListFilter):
+class ActionListFilter(admin.SimpleListFilter):
     title = _('Action')
     parameter_name = 'action_flag'
 
