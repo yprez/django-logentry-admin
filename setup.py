@@ -1,4 +1,8 @@
-from distutils.core import setup
+# Use setuptools if we can
+try:
+    from setuptools.core import setup
+except ImportError:
+    from distutils.core import setup
 
 setup(
     name='django-logentry-admin',
@@ -11,7 +15,7 @@ setup(
     description='Show all LogEntries in the Django admin site.',
     long_description=open('README.rst').read(),
     install_requires=[
-        'Django >= 1.4',
+        'Django>=1.4',
     ],
     classifiers=(
         'Development Status :: 3 - Alpha',
