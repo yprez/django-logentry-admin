@@ -94,6 +94,12 @@ class LogEntryAdmin(admin.ModelAdmin):
             'content_type'
         )
 
+    def get_actions(self, request):
+        actions = super(LogEntryAdmin, self).get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
     def action_description(self, obj):
         return action_names[obj.action_flag]
     action_description.short_description = 'Action'
