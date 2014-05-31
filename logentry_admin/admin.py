@@ -36,6 +36,25 @@ class LogEntryAdmin(admin.ModelAdmin):
     readonly_fields = LogEntry._meta.get_all_field_names() + \
                       ['object_link', 'action_description', 'user_link',]
 
+    fieldsets = (
+        (_(u'Metadata'), {
+            'fields': (
+                'action_time',
+                'user_link',
+                'action_description',
+                'object_link',
+            )
+        }),
+        (_(u'Detail'), {
+            'fields': (
+                'change_message',
+                'content_type',
+                'object_id',
+                'object_repr',
+            )
+        }),
+    )
+
     list_filter = [
         'user',
         'content_type',
