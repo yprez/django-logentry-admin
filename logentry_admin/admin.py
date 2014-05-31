@@ -84,6 +84,16 @@ class LogEntryAdmin(admin.ModelAdmin):
     object_link.admin_order_field = 'object_repr'
     object_link.short_description = u'object'
 
+    def queryset(self, request):
+        return super(
+            LogEntryAdmin,
+            self
+        ).queryset(
+            request
+        ).prefetch_related(
+            'content_type'
+        )
+
     def action_description(self, obj):
         return action_names[obj.action_flag]
     action_description.short_description = 'Action'
