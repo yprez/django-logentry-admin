@@ -87,6 +87,10 @@ class LogEntryAdmin(admin.ModelAdmin):
         'change_message'
     ]
 
+    list_display_links = [
+        'action_time',
+        'change_message',
+    ]
     list_display = [
         'action_time',
         'user_link',
