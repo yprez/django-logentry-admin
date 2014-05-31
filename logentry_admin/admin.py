@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.utils.html import escape
+from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.admin import SimpleListFilter
 
@@ -33,7 +35,7 @@ class LogEntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'action_time'
 
     readonly_fields = LogEntry._meta.get_all_field_names() + \
-                      ['object_link', 'action_description']
+                      ['object_link', 'action_description', 'user_link',]
 
     list_filter = [
         'user',
@@ -48,7 +50,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     list_display = [
         'action_time',
-        'user',
+        'user_link',
         'content_type',
         'object_link',
         'action_description',
@@ -83,6 +85,23 @@ class LogEntryAdmin(admin.ModelAdmin):
     object_link.allow_tags = True
     object_link.admin_order_field = 'object_repr'
     object_link.short_description = u'object'
+
+    def user_link(self, obj):
+        try:
+            ct = ContentType.objects.get_for_model(obj.user._meta.model)
+            link = u'<a href="%s">%s</a>' % (
+                reverse(
+                    'admin:%s_%s_change' % (ct.app_label, ct.model),
+                    args=[obj.user.pk]
+                ),
+                escape(force_text(obj.user)),
+            )
+        except:
+            link = escape(force_text(obj.user))
+        return link
+    user_link.allow_tags = True
+    user_link.admin_order_field = 'user'
+    user_link.short_description = u'user'
 
     def queryset(self, request):
         return super(
