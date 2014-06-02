@@ -24,11 +24,8 @@ class ActionListFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value():
-            return queryset.filter(
-                action_flag=self.value()
-            )
-        else:
-            return queryset
+            queryset = queryset.filter(action_flag=self.value())
+        return queryset
 
 
 class UserListFilter(admin.SimpleListFilter):
@@ -44,18 +41,15 @@ class UserListFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value():
-            return queryset.filter(
-                user_id=self.value(), user__is_staff=True
-            )
-        else:
-            return queryset
+            queryset = queryset.filter(user_id=self.value(), user__is_staff=True)
+        return queryset
 
 
 class LogEntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'action_time'
 
-    readonly_fields = LogEntry._meta.get_all_field_names() + \
-                      ['object_link', 'action_description', 'user_link',]
+    readonly_fields = (LogEntry._meta.get_all_field_names() +
+                       ['object_link', 'action_description', 'user_link'])
 
     fieldsets = (
         (_(u'Metadata'), {
@@ -147,14 +141,8 @@ class LogEntryAdmin(admin.ModelAdmin):
     user_link.short_description = u'user'
 
     def queryset(self, request):
-        return super(
-            LogEntryAdmin,
-            self
-        ).queryset(
-            request
-        ).prefetch_related(
-            'content_type'
-        )
+        queryset = super(LogEntryAdmin, self).queryset(request)
+        return queryset.prefetch_related('content_type')
 
     def get_actions(self, request):
         actions = super(LogEntryAdmin, self).get_actions(request)
