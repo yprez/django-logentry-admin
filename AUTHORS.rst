@@ -9,3 +9,4 @@ Contributors
 
 * Yuri Prezument (`yprez <https://github.com/yprez>`_)
 * James Aylett (`jaylett <https://github.com/jaylett>`_)
+* GoTLiuM InSPiRiT (`gotlium <https://github.com/gotlium>`_)
