@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, NoReverseMatch
 from django.utils.encoding import force_text
 from django.utils.html import escape
 from django.utils.translation import ugettext_lazy as _
@@ -116,7 +116,7 @@ class LogEntryAdmin(admin.ModelAdmin):
                     ),
                     escape(obj.object_repr),
                 )
-            except:
+            except NoReverseMatch:
                 link = escape(obj.object_repr)
         return link
     object_link.allow_tags = True
@@ -133,7 +133,7 @@ class LogEntryAdmin(admin.ModelAdmin):
                 ),
                 escape(force_text(obj.user)),
             )
-        except:
+        except NoReverseMatch:
             link = escape(force_text(obj.user))
         return link
     user_link.allow_tags = True
