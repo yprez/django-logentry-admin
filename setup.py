@@ -1,4 +1,8 @@
-from distutils.core import setup
+# Use setuptools if we can
+try:
+    from setuptools.core import setup
+except ImportError:
+    from distutils.core import setup
 
 setup(
     name='django-logentry-admin',
@@ -6,12 +10,15 @@ setup(
     author_email='y@yprez.com',
     version='0.1.2',
     packages=['logentry_admin'],
+    package_data={
+        'logentry_admin': [ 'templates/admin/admin/logentry/change_form.html' ]
+    },
     license='ISC',
     url='http://github.com/yprez/django-logentry-admin',
-    description='Add Django LogEntries the the Django admin site',
+    description='Show all LogEntries in the Django admin site.',
     long_description=open('README.rst').read(),
     install_requires=[
-        'Django >= 1.4',
+        'Django>=1.4',
     ],
     classifiers=(
         'Development Status :: 3 - Alpha',
