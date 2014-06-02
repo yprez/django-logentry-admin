@@ -1,5 +1,5 @@
-v0.1.3 - In progress
-====================
+v0.1.3 - 02/06/2014
+===================
 
 * Improved display layout.
 * Added links to user and object.
