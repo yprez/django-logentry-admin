@@ -11,3 +11,4 @@ Contributors
 * James Aylett (`jaylett <https://github.com/jaylett>`_)
 * GoTLiuM InSPiRiT (`gotlium <https://github.com/gotlium>`_)
 * Brad Pitcher (`brad <https://github.com/brad>`_)
+* Vladimir Ulupov (`vaal- <https://github.com/vaal->`_)
