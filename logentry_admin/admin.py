@@ -48,7 +48,7 @@ class UserListFilter(admin.SimpleListFilter):
 class LogEntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'action_time'
 
-    readonly_fields = (LogEntry._meta.get_all_field_names() +
+    readonly_fields = ([f.name for f in LogEntry._meta.fields] +
                        ['object_link', 'action_description', 'user_link'])
 
     fieldsets = (
