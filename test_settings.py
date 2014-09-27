@@ -6,6 +6,10 @@ INSTALLED_APPS = (
     'logentry_admin',
 )
 
+from django import VERSION
+if VERSION < (1, 7):
+    INSTALLED_APPS += ('south', )
+
 SECRET_KEY = 'logentry_admin'
 
 DATABASES = {
@@ -21,3 +25,4 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
+
