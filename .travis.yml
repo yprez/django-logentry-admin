@@ -1,0 +1,14 @@
+language: python
+python:
+ - "2.7"
+env:
+ - DJANGO_VERSION=1.7
+install:
+ - pip install -q "Django>=${DJANGO_VERSION},<${DJANGO_VERSION}.99"
+ - pip install -q South==1.0 coverage flake8
+script:
+  - django-admin.py syncdb --noinput
+  - django-admin.py migrate --noinput
+  - coverage run --source=logentry_admin {envbindir}/django-admin.py test logentry_admin
+  - coverage report --show-missing --fail-under=95
+  - flake8 logentry_admin --max-line-length=99
