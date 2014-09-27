@@ -1,13 +1,10 @@
 from django.contrib.admin.sites import AdminSite
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase, Client
 
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from logentry_admin.admin import LogEntryAdmin
-
-
-User = get_user_model()
 
 
 class LogentryAdminTests(TestCase):
