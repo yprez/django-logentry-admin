@@ -2,7 +2,11 @@ language: python
 python:
  - "2.7"
 env:
- - DJANGO_VERSION=1.7
+  global:
+    - PYTHONPATH=.
+    - DJANGO_SETTINGS_MODULE=test_settings
+  matrix:
+    - DJANGO_VERSION=1.7
 install:
  - pip install -q "Django>=${DJANGO_VERSION},<${DJANGO_VERSION}.99"
  - pip install -q South==1.0 coverage flake8
