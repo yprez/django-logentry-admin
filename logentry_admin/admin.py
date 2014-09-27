@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.auth import get_user_model
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse, NoReverseMatch
@@ -7,6 +6,12 @@ from django.utils.encoding import force_text
 from django.utils.html import escape
 from django.utils.translation import ugettext_lazy as _
 
+
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+except:
+    from django.contrib.auth.models import User  # noqa
 
 action_names = {
     ADDITION: _('Addition'),
@@ -33,7 +38,7 @@ class UserListFilter(admin.SimpleListFilter):
     parameter_name = 'user'
 
     def lookups(self, request, model_admin):
-        staff = get_user_model().objects.filter(is_staff=True)
+        staff = User.objects.filter(is_staff=True)
         return (
             (s.id, force_text(s))
             for s in staff
