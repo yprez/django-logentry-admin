@@ -130,7 +130,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     def user_link(self, obj):
         try:
-            ct = ContentType.objects.get_for_model(obj.user._meta.model)
+            ct = ContentType.objects.get_for_model(type(obj.user))
             link = u'<a href="%s">%s</a>' % (
                 reverse(
                     'admin:%s_%s_change' % (ct.app_label, ct.model),
