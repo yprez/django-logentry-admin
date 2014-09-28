@@ -2,6 +2,8 @@
 django-logentry-admin
 =====================
 
+|travis-ci-status|
+
 Add Django LogEntries the the Django admin site.
 
 Allows to view all log entries in the admin.
@@ -29,3 +31,7 @@ To add this application into your project, just add it to your
         ...
         'logentry_admin',
     )
+
+
+.. |travis-ci-status| image:: https://api.travis-ci.org/yprez/django-logentry-admin.png?branch=master
+   :target: http://travis-ci.org/yprez/django-logentry-admin
