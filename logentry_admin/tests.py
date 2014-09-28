@@ -58,3 +58,10 @@ class LogentryAdminTests(TestCase):
             object_repr='OBJ_REPR'
         )
         self.assertEquals(admin.object_link(no_reverse), 'OBJ_REPR')
+
+    def test_user_link(self):
+        admin = LogEntryAdmin(LogEntry, AdminSite())
+        logentry = LogEntry(object_repr='OBJ_REPR', action_flag=DELETION, user_id=self.user.id)
+
+        self.assertIn('<a href="', admin.user_link(logentry))
+        self.assertIn(self.user.username, admin.user_link(logentry))
