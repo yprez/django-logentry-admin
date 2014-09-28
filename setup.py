@@ -20,14 +20,19 @@ setup(
     install_requires=[
         'Django>=1.4',
     ],
-    classifiers=(
+    classifiers=[
         'Development Status :: 3 - Alpha',
         'Framework :: Django',
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'License :: OSI Approved :: ISC License (ISCL)',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-    ),
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+    ],
 )
