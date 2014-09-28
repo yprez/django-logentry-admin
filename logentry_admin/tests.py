@@ -22,7 +22,7 @@ class LogentryAdminTests(TestCase):
 
         res = client.get('/admin/')
         self.assertEquals(res.status_code, 200)
-        self.assertIn('Log entries', res.content)
+        self.assertIn('Log entries', res.content.decode())
 
     def test_admin_logentry_list_view(self):
         client = Client()
@@ -35,7 +35,7 @@ class LogentryAdminTests(TestCase):
 
         res = client.get('/admin/admin/logentry/')
         self.assertEquals(res.status_code, 200)
-        self.assertIn('Log entries', res.content)
+        self.assertIn('Log entries', res.content.decode())
 
     def test_object_link(self):
         admin = LogEntryAdmin(LogEntry, AdminSite())
