@@ -2,7 +2,7 @@
 django-logentry-admin
 =====================
 
-|travis-ci-status|
+|travis-ci-status| |coverage-status|
 
 Add Django LogEntries the the Django admin site.
 
@@ -35,3 +35,5 @@ To add this application into your project, just add it to your
 
 .. |travis-ci-status| image:: https://travis-ci.org/yprez/django-logentry-admin.svg?branch=master
    :target: http://travis-ci.org/yprez/django-logentry-admin
+.. |coverage-status| image:: https://img.shields.io/coveralls/yprez/django-logentry-admin.svg?branch=master
+   :target: https://coveralls.io/r/yprez/django-logentry-admin?branch=coveralls

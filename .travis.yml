@@ -31,9 +31,12 @@ matrix:
 install:
  - pip install -q "Django>=${DJANGO_VERSION},<${DJANGO_VERSION}.99"
  - pip install -q South==1.0 coverage flake8
+ - pip install coveralls
 script:
   - django-admin.py syncdb --noinput
   - django-admin.py migrate --noinput
   - coverage run --source=logentry_admin `which django-admin.py` test logentry_admin
   - coverage report --show-missing --fail-under=90
   - flake8 logentry_admin --max-line-length=99
+after_success:
+  coveralls
