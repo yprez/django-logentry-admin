@@ -12,3 +12,4 @@ Contributors
 * GoTLiuM InSPiRiT (`gotlium <https://github.com/gotlium>`_)
 * Brad Pitcher (`brad <https://github.com/brad>`_)
 * Vladimir Ulupov (`vaal- <https://github.com/vaal->`_)
+* Pavel Savchenko (`asfaltboy <https://github.com/asfaltboy>`_)

@@ -8,7 +8,7 @@ setup(
     name='django-logentry-admin',
     author='Yuri Prezument',
     author_email='y@yprez.com',
-    version='0.1.3',
+    version='0.1.4',
     packages=['logentry_admin'],
     package_data={
         'logentry_admin': ['templates/admin/admin/logentry/change_form.html']
