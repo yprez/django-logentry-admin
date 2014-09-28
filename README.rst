@@ -33,5 +33,5 @@ To add this application into your project, just add it to your
     )
 
 
-.. |travis-ci-status| image:: https://api.travis-ci.org/yprez/django-logentry-admin.png?branch=master
+.. |travis-ci-status| image:: https://travis-ci.org/yprez/django-logentry-admin.svg?branch=master
    :target: http://travis-ci.org/yprez/django-logentry-admin
