@@ -147,8 +147,8 @@ class LogEntryAdmin(admin.ModelAdmin):
     user_link.admin_order_field = 'user'
     user_link.short_description = 'user'
 
-    def queryset(self, request):
-        queryset = super(LogEntryAdmin, self).queryset(request)
+    def get_queryset(self, request):
+        queryset = super(LogEntryAdmin, self).get_queryset(request)
         return queryset.prefetch_related('content_type')
 
     def get_actions(self, request):
