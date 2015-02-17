@@ -40,6 +40,6 @@ script:
   - django-admin.py migrate --noinput
   - coverage run --source=logentry_admin `which django-admin.py` test logentry_admin
   - coverage report --show-missing --fail-under=90
-  - flake8 logentry_admin --max-line-length=99
+  - flake8 logentry_admin
 after_success:
   coveralls
