@@ -52,7 +52,7 @@ class LogentryAdminTests(TestCase):
         self.assertIn('<a href="', admin.object_link(created))
 
         no_reverse = LogEntry(
-            content_type_id=ContentType.objects.get(name='session').id,
+            content_type_id=ContentType.objects.get(model='session').id,
             action_flag=CHANGE,
             object_id=5,
             object_repr='OBJ_REPR'
