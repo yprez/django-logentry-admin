@@ -33,11 +33,11 @@ To add this application into your project, just add it to your
     )
 
 
-.. |travis-ci-status| image:: https://travis-ci.org/yprez/django-logentry-admin.svg?branch=master
+.. |travis-ci-status| image:: http://img.shields.io/travis/tweepy/tweepy/master.svg?style=flat
    :target: http://travis-ci.org/yprez/django-logentry-admin
 
 .. |coverage-status| image:: https://img.shields.io/coveralls/yprez/django-logentry-admin.svg?branch=master
    :target: https://coveralls.io/r/yprez/django-logentry-admin?branch=coveralls
 
-.. |pypi-status| image:: https://pypip.in/version/django-logentry-admin/badge.svg
+.. |pypi-status| image:: http://img.shields.io/pypi/v/django-logentry-admin.svg?style=flat
     :target: https://pypi.python.org/pypi/django-logentry-admin
