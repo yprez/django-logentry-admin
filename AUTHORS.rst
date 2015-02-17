@@ -13,3 +13,4 @@ Contributors
 * Brad Pitcher (`brad <https://github.com/brad>`_)
 * Vladimir Ulupov (`vaal- <https://github.com/vaal->`_)
 * Pavel Savchenko (`asfaltboy <https://github.com/asfaltboy>`_)
+* Marc-Olivier Titeux (`motiteux <https://github.com/motiteux>`_)
