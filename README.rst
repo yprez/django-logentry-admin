@@ -11,6 +11,13 @@ Allows to view all log entries in the admin.
 Originally based on: `Django snippet 2484 <http://djangosnippets.org/snippets/2484/>`_
 
 
+Supported versions
+==================
+
+* Django 1.9, 1.8, 1.7
+* Python 3.5, 3.4, 3.3, 3.2, 2.7
+
+
 Installation
 ============
 
