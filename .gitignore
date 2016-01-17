@@ -1,4 +1,9 @@
 *.pyc
-MANIFEST
-dist/
+*.db
+*.egg-info
+.coverage
+.tox
 
+/MANIFEST
+/dist
+/build
