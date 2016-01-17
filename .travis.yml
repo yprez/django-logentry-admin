@@ -17,7 +17,7 @@ env:
     - TOX_ENV=py33-django17
     - TOX_ENV=py32-django17
     - TOX_ENV=py27-django17
-    - TOX_ENV=coverage
+    - TOX_ENV=coverage-django19
     - TOX_ENV=flake8
 install:
  - pip install tox coveralls
