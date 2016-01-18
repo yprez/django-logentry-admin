@@ -3,6 +3,7 @@
 *.egg-info
 .coverage
 .tox
+.cache
 
 /MANIFEST
 /dist
