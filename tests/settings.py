@@ -15,7 +15,7 @@ DATABASES = {
     },
 }
 
-ROOT_URLCONF = 'test_urlconf'
+ROOT_URLCONF = 'tests.urls'
 
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
