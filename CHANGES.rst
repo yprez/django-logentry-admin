@@ -3,6 +3,7 @@ Current
 
 * Add tests and support for Django 1.9 and Python 3.5.
 * Drop support for Python 2.5, 2.6, Django 1.4, 1.5, 1.6.
+* Test with py.test instead of unittest.
 
 
 v0.1.5 - 17/02/2015
