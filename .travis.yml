@@ -16,6 +16,7 @@ env:
     - TOX_ENV=coverage-django19
     - TOX_ENV=flake8
 install:
+ - if [[ $TOX_ENV == py32-django18 ]] || [[ $TOX_ENV == py32-django17 ]]; then pip install pip\<8.0.0 virtualenv\<14.0.0; fi
  - pip install tox coveralls
 script:
   - tox -e $TOX_ENV
