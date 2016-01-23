@@ -1,14 +1,7 @@
 language: python
-python: 3.5
 env:
-  global:
-    - PYTHONPATH=.
-    - DJANGO_SETTINGS_MODULE=test_settings
-  matrix:
-    - TOX_ENV=py35-django19
     - TOX_ENV=py34-django19
     - TOX_ENV=py27-django19
-    - TOX_ENV=py35-django18
     - TOX_ENV=py34-django18
     - TOX_ENV=py33-django18
     - TOX_ENV=py32-django18
@@ -19,7 +12,16 @@ env:
     - TOX_ENV=py27-django17
     - TOX_ENV=coverage-django19
     - TOX_ENV=flake8
+matrix:
+  include:
+    - python: 3.5
+      env:
+        - TOX_ENV=py35-django19
+    - python: 3.5
+      env:
+        - TOX_ENV=py35-django18
 install:
+ - if [[ $TOX_ENV == py32-django18 ]] || [[ $TOX_ENV == py32-django17 ]]; then pip install pip\<8.0.0 virtualenv\<14.0.0; fi
  - pip install tox coveralls
 script:
   - tox -e $TOX_ENV
