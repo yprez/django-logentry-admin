@@ -18,7 +18,7 @@ setup(
     description='Show all LogEntries in the Django admin site.',
     long_description=open('README.rst').read(),
     install_requires=[
-        'Django>=1.4',
+        'Django>=1.7',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -34,5 +34,6 @@ setup(
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ],
 )
