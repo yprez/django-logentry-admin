@@ -59,7 +59,7 @@ Or run on multiple CPUs in parallel with detox to make it faster::
     $ detox
 
 
-.. |travis-ci-status| image:: http://img.shields.io/travis/tweepy/tweepy/master.svg?style=flat
+.. |travis-ci-status| image:: http://img.shields.io/travis/yprez/django-logentry-admin/master.svg?style=flat
    :target: http://travis-ci.org/yprez/django-logentry-admin
 
 .. |coverage-status| image:: https://img.shields.io/coveralls/yprez/django-logentry-admin.svg?branch=master
