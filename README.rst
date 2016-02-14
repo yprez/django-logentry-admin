@@ -2,7 +2,7 @@
 django-logentry-admin
 =====================
 
-|travis-ci-status| |coverage-status| |pypi-status|
+|travis-ci| |coverage| |requires-io| |pypi-version|
 
 Add Django LogEntries the the Django admin site.
 
@@ -59,11 +59,14 @@ Or run on multiple CPUs in parallel with detox to make it faster::
     $ detox
 
 
-.. |travis-ci-status| image:: http://img.shields.io/travis/yprez/django-logentry-admin/master.svg?style=flat
+.. |travis-ci| image:: http://img.shields.io/travis/yprez/django-logentry-admin/master.svg?style=flat
    :target: http://travis-ci.org/yprez/django-logentry-admin
 
-.. |coverage-status| image:: https://img.shields.io/coveralls/yprez/django-logentry-admin.svg?branch=master
+.. |coverage| image:: https://img.shields.io/coveralls/yprez/django-logentry-admin.svg?branch=master
    :target: https://coveralls.io/r/yprez/django-logentry-admin?branch=coveralls
 
-.. |pypi-status| image:: http://img.shields.io/pypi/v/django-logentry-admin.svg?style=flat
+.. |pypi-version| image:: http://img.shields.io/pypi/v/django-logentry-admin.svg?style=flat
     :target: https://pypi.python.org/pypi/django-logentry-admin
+
+.. |requires-io| image:: https://img.shields.io/requires/github/yprez/django-logentry-admin.svg
+    :target: https://requires.io/github/yprez/django-logentry-admin/requirements/?branch=master
