@@ -4,9 +4,7 @@ django-logentry-admin
 
 |travis-ci| |coverage| |requires-io| |pypi-version|
 
-Add the Django LogEntry model the the admin site.
-
-Allows to view all log entries in the admin.
+Show all LogEntry objects in the Django admin site.
 
 Originally based on: `Django snippet 2484 <http://djangosnippets.org/snippets/2484/>`_
 
