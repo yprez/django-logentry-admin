@@ -1,8 +1,5 @@
-# Use setuptools if we can
-try:
-    from setuptools.core import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup
+
 
 setup(
     name='django-logentry-admin',
