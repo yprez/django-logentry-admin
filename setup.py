@@ -1,6 +1,14 @@
 from setuptools import setup
 
 
+with open('README.rst') as f:
+    readme = f.read()
+
+
+with open('CHANGELOG.rst') as f:
+    changelog = f.read()
+
+
 setup(
     name='django-logentry-admin',
     author='Yuri Prezument',
@@ -13,7 +21,7 @@ setup(
     license='ISC',
     url='http://github.com/yprez/django-logentry-admin',
     description='Show all LogEntry objects in the Django admin site.',
-    long_description=open('README.rst').read(),
+    long_description=readme + '\n\n' + changelog,
     install_requires=[
         'Django>=1.7',
     ],
