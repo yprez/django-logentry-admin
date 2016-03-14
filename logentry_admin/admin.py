@@ -43,7 +43,8 @@ class UserListFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value():
-            queryset = queryset.filter(user_id=self.value(), user__is_staff=True)
+            queryset = queryset.filter(user_id=self.value(),
+                                       user__is_staff=True)
         return queryset
 
 
