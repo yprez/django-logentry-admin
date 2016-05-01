@@ -107,21 +107,21 @@ class LogEntryAdmin(admin.ModelAdmin):
         return False
 
     def object_link(self, obj):
-        if obj.action_flag == DELETION:
-            link = escape(obj.object_repr)
-        else:
-            ct = obj.content_type
+        object_link = escape(obj.object_repr)
+
+        if obj.action_flag != DELETION:
+            # try returning an actual link instead of object repr string
             try:
-                link = '<a href="%s">%s</a>' % (
-                    reverse(
-                        'admin:%s_%s_change' % (ct.app_label, ct.model),
-                        args=[obj.object_id]
-                    ),
-                    escape(obj.object_repr),
+                url = reverse(
+                    'admin:{}_{}_change'.format(obj.content_type.app_label,
+                                                obj.content_type.model),
+                    args=[obj.object_id]
                 )
+                object_link = '<a href="{}">{}</a>'.format(url, object_link)
             except NoReverseMatch:
-                link = escape(obj.object_repr)
-        return link
+                pass
+        return object_link
+
     object_link.allow_tags = True
     object_link.admin_order_field = 'object_repr'
     object_link.short_description = 'object'
