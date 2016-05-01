@@ -45,6 +45,7 @@ def test_admin_logentry_list_view_filters(admin_client, admin_user):
 
 def test_object_link(admin_user):
     admin = LogEntryAdmin(LogEntry, AdminSite())
+
     deleted = LogEntry(object_repr='OBJ_REPR', action_flag=DELETION)
     assert admin.object_link(deleted) == 'OBJ_REPR'
 
@@ -66,7 +67,7 @@ def test_object_link(admin_user):
     assert admin.object_link(no_reverse) == 'OBJ_REPR'
 
 
-def test_user_link(admin_client, admin_user):
+def test_user_link(admin_user):
     admin = LogEntryAdmin(LogEntry, AdminSite())
     logentry = LogEntry(object_repr='OBJ_REPR', action_flag=DELETION,
                         user_id=admin_user.id)
