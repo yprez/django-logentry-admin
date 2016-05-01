@@ -127,18 +127,19 @@ class LogEntryAdmin(admin.ModelAdmin):
     object_link.short_description = 'object'
 
     def user_link(self, obj):
+        content_type = ContentType.objects.get_for_model(type(obj.user))
+        user_link = escape(force_text(obj.user))
         try:
-            ct = ContentType.objects.get_for_model(type(obj.user))
-            link = '<a href="%s">%s</a>' % (
-                reverse(
-                    'admin:%s_%s_change' % (ct.app_label, ct.model),
-                    args=[obj.user.pk]
-                ),
-                escape(force_text(obj.user)),
+            # try returning an actual link instead of object repr string
+            url = reverse(
+                'admin:{}_{}_change'.format(content_type.app_label,
+                                            content_type.model),
+                args=[obj.user.pk]
             )
+            user_link = '<a href="{}">{}</a>'.format(url, user_link)
         except NoReverseMatch:
-            link = escape(force_text(obj.user))
-        return link
+            pass
+        return user_link
     user_link.allow_tags = True
     user_link.admin_order_field = 'user'
     user_link.short_description = 'user'
