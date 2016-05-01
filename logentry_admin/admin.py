@@ -108,13 +108,14 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     def object_link(self, obj):
         object_link = escape(obj.object_repr)
+        content_type = obj.content_type
 
-        if obj.action_flag != DELETION:
+        if obj.action_flag != DELETION and content_type is not None:
             # try returning an actual link instead of object repr string
             try:
                 url = reverse(
-                    'admin:{}_{}_change'.format(obj.content_type.app_label,
-                                                obj.content_type.model),
+                    'admin:{}_{}_change'.format(content_type.app_label,
+                                                content_type.model),
                     args=[obj.object_id]
                 )
                 object_link = '<a href="{}">{}</a>'.format(url, object_link)
