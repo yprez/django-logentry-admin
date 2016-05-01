@@ -76,6 +76,21 @@ def test_object_link_no_reverse(admin, admin_user):
     assert admin.object_link(log_entry) == 'OBJ_REPR'
 
 
+def test_object_link_content_type_none(admin, admin_user):
+    """
+    Test reversion when content type is None (e.g. after deleting stale ones)
+
+    Regression test for issue #21
+    """
+    log_entry = LogEntry(
+        content_type_id=None,
+        action_flag=ADDITION,
+        object_id=admin_user.id,
+        object_repr='OBJ_REPR'
+    )
+    assert admin.object_link(log_entry) == 'OBJ_REPR'
+
+
 def test_user_link(admin_user):
     admin = LogEntryAdmin(LogEntry, AdminSite())
     logentry = LogEntry(object_repr='OBJ_REPR', action_flag=DELETION,
