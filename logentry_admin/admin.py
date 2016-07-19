@@ -101,7 +101,10 @@ class LogEntryAdmin(admin.ModelAdmin):
         return False
 
     def has_change_permission(self, request, obj=None):
-        return request.user.is_superuser and request.method != 'POST'
+        return (
+            request.user.is_superuser or
+            request.user.has_perm('admin.change_logentry')
+        ) and request.method != 'POST'
 
     def has_delete_permission(self, request, obj=None):
         return False
