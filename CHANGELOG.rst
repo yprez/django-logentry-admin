@@ -9,6 +9,7 @@ Current
 * Drop support for Python 2.5, 2.6, Django 1.4, 1.5, 1.6.
 * Test with py.test instead of unittest.
 * Fix AttributeError when content_type is None, issue `#21 <https://github.com/yprez/django-logentry-admin/issues/21>`_.
+* Show log entries for users with change_logentry permission, #25.
 
 
 v0.1.5 - 17/02/2015
