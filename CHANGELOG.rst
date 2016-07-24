@@ -2,7 +2,7 @@
 Changelog
 =========
 
-v1.0.0 - 24/07/2016
+v1.0.1 - 24/07/2016
 ===================
 
 * Add tests and support for Django 1.9 and Python 3.5.
