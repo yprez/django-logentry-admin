@@ -2,8 +2,8 @@
 Changelog
 =========
 
-Current
-=======
+v1.0.0 - 24/07/2016
+===================
 
 * Add tests and support for Django 1.9 and Python 3.5.
 * Drop support for Python 2.5, 2.6, Django 1.4, 1.5, 1.6.
