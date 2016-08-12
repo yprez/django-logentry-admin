@@ -13,7 +13,7 @@ setup(
     name='django-logentry-admin',
     author='Yuri Prezument',
     author_email='y@yprez.com',
-    version='1.0.1',
+    version='1.0.2',
     packages=['logentry_admin'],
     package_data={
         'logentry_admin': ['templates/admin/admin/logentry/change_form.html']
@@ -32,6 +32,7 @@ setup(
         'Framework :: Django :: 1.7',
         'Framework :: Django :: 1.8',
         'Framework :: Django :: 1.9',
+        'Framework :: Django :: 1.10',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: ISC License (ISCL)',
         'Natural Language :: English',
