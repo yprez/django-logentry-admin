@@ -128,7 +128,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     object_link.allow_tags = True
     object_link.admin_order_field = 'object_repr'
-    object_link.short_description = 'object'
+    object_link.short_description = _('object')
 
     def user_link(self, obj):
         content_type = ContentType.objects.get_for_model(type(obj.user))
@@ -160,7 +160,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     def action_description(self, obj):
         return action_names[obj.action_flag]
-    action_description.short_description = 'Action'
+    action_description.short_description = _('Action')
 
 
 admin.site.register(LogEntry, LogEntryAdmin)
