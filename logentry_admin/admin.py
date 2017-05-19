@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+import django
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.contrib.auth import get_user_model
@@ -52,7 +53,8 @@ class LogEntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'action_time'
 
     readonly_fields = ([f.name for f in LogEntry._meta.fields] +
-                       ['object_link', 'action_description', 'user_link'])
+                       ['object_link', 'action_description', 'user_link',
+                        'get_change_message'])
 
     fieldsets = (
         (_('Metadata'), {
@@ -65,7 +67,7 @@ class LogEntryAdmin(admin.ModelAdmin):
         }),
         (_('Detail'), {
             'fields': (
-                'change_message',
+                'get_change_message',
                 'content_type',
                 'object_id',
                 'object_repr',
@@ -86,7 +88,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     list_display_links = [
         'action_time',
-        'change_message',
+        'get_change_message',
     ]
     list_display = [
         'action_time',
@@ -94,7 +96,7 @@ class LogEntryAdmin(admin.ModelAdmin):
         'content_type',
         'object_link',
         'action_description',
-        'change_message',
+        'get_change_message',
     ]
 
     def has_add_permission(self, request):
@@ -125,7 +127,6 @@ class LogEntryAdmin(admin.ModelAdmin):
             except NoReverseMatch:
                 pass
         return object_link
-
     object_link.allow_tags = True
     object_link.admin_order_field = 'object_repr'
     object_link.short_description = _('object')
@@ -146,7 +147,7 @@ class LogEntryAdmin(admin.ModelAdmin):
         return user_link
     user_link.allow_tags = True
     user_link.admin_order_field = 'user'
-    user_link.short_description = 'user'
+    user_link.short_description = _('user')
 
     def get_queryset(self, request):
         queryset = super(LogEntryAdmin, self).get_queryset(request)
@@ -161,6 +162,12 @@ class LogEntryAdmin(admin.ModelAdmin):
     def action_description(self, obj):
         return action_names[obj.action_flag]
     action_description.short_description = _('Action')
+
+    def get_change_message(self, obj):
+        if django.VERSION >= (1, 10):
+            return obj.get_change_message()
+        return obj.change_message
+    get_change_message.short_description = _('change message')
 
 
 admin.site.register(LogEntry, LogEntryAdmin)
