@@ -2,10 +2,19 @@
 Changelog
 =========
 
+Current
+=======
+
+* Add tests for Django 1.11 compatibility.
+* Make short_descriptions translatable in admin.py.
+* Make use of new get_change_message() method on Django >= 1.11.
+* Add Russian translation.
+
+
 v1.0.2 - 12/08/2016
 ===================
 
-* Tests for Django 1.10 compatibility.
+* Add tests for Django 1.10 compatibility.
 
 
 v1.0.1 - 24/07/2016
