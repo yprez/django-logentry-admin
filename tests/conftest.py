@@ -21,6 +21,10 @@ def pytest_configure():
             'django.contrib.sessions.middleware.SessionMiddleware',
             'django.contrib.auth.middleware.AuthenticationMiddleware',
         ],
+        MIDDLEWARE=[
+            'django.contrib.sessions.middleware.SessionMiddleware',
+            'django.contrib.auth.middleware.AuthenticationMiddleware',
+        ],
         TEMPLATES=[{
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
             'APP_DIRS': True,
