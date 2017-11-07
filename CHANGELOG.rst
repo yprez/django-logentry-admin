@@ -6,6 +6,7 @@ Current
 =======
 
 * Add tests for Django 1.11 compatibility.
+* Drop support for Python 3.2, 3.3.
 * Make short_descriptions translatable in admin.py.
 * Make use of new get_change_message() method on Django >= 1.11.
 * Add Russian translation.
