@@ -5,11 +5,11 @@ Changelog
 Current
 =======
 
-* Add tests for Django 1.11 compatibility.
+* Add tests for Django 1.11 and 2.0 compatibility.
 * Drop support for Python 3.2, 3.3.
 * Make short_descriptions translatable in admin.py.
 * Make use of new get_change_message() method on Django >= 1.11.
-* Add Russian translation.
+* Add Russian, Azerbaijani and Portuguese translations.
 
 
 v1.0.2 - 12/08/2016
