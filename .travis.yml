@@ -5,6 +5,7 @@ python:
   - 3.5
   - 3.6
 sudo: false
+cache: .tox
 
 install:
   - pip install tox tox-travis coveralls
