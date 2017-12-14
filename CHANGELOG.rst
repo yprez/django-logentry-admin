@@ -2,8 +2,8 @@
 Changelog
 =========
 
-Current
-=======
+v1.0.3 - 14/12/2017
+===================
 
 * Add tests for Django 1.11 and 2.0 compatibility.
 * Drop support for Python 3.2, 3.3.
