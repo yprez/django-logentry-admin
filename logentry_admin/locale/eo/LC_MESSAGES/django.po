@@ -1,0 +1,59 @@
+# This file is distributed under the same license as the LogEntry Admin package.
+# Meiyer Goren <interDist@users.noreply.github.com>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-29 15:10+0000\n"
+"PO-Revision-Date: 2017-12-29 15:10+0000\n"
+"Last-Translator: Meiyer Goren <interDist@users.noreply.github.com>\n"
+"Language-Team: \n"
+"Language: eo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:17
+msgctxt "logentry_admin:action_type"
+msgid "Addition"
+msgstr "Aldono"
+
+#: admin.py:18
+msgctxt "logentry_admin:action_type"
+msgid "Deletion"
+msgstr "Forigo"
+
+#: admin.py:19
+msgctxt "logentry_admin:action_type"
+msgid "Change"
+msgstr "Modifo"
+
+#: admin.py:24 admin.py:166
+msgid "action"
+msgstr "ago"
+
+#: admin.py:37
+msgid "staff user"
+msgstr "personarano"
+
+#: admin.py:62
+msgid "Metadata"
+msgstr "Metadatumoj"
+
+#: admin.py:70
+msgid "Details"
+msgstr "Detaloj"
+
+#: admin.py:134
+msgid "object"
+msgstr "objekto"
+
+#: admin.py:152
+msgid "user"
+msgstr "uzanto"
+
+#: admin.py:172
+msgid "change message"
+msgstr "ŝanĝmesaĝo"
