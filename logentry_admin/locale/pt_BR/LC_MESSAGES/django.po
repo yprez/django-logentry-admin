@@ -1,61 +1,60 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# This file is distributed under the same license as the LogEntry Admin package.
+# Diego Rabatone Oliveira <diraol@diraol.eng.br>, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-19 17:52+0300\n"
-"PO-Revision-Date: 2017-10-02 14:15-0300\n"
+"POT-Creation-Date: 2017-12-29 15:10+0000\n"
+"PO-Revision-Date: 2017-12-29 15:10+0000\n"
+"Last-Translator: Diego Rabatone Oliveira <diraol@diraol.eng.br>\n"
+"Language-Team: \n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
-"Last-Translator: Diego Rabatone Oliveira <diraol@diraol.eng.br>\n"
-"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: admin.py:14
+#: admin.py:17
+msgctxt "logentry_admin:action_type"
 msgid "Addition"
 msgstr "Adiçao"
 
-#: admin.py:15
+#: admin.py:18
+msgctxt "logentry_admin:action_type"
 msgid "Deletion"
 msgstr "Remoção"
 
-#: admin.py:16
+#: admin.py:19
+msgctxt "logentry_admin:action_type"
 msgid "Change"
 msgstr "Alteração"
 
-#: admin.py:21 admin.py:162
-msgid "Action"
-msgstr "Ação"
+#: admin.py:24 admin.py:166
+msgid "action"
+msgstr "ação"
 
-#: admin.py:34
+#: admin.py:37
 msgid "staff user"
 msgstr "usuário administrativo"
 
-#: admin.py:58
+#: admin.py:62
 msgid "Metadata"
 msgstr "Metadados"
 
-#: admin.py:66
-msgid "Detail"
+#: admin.py:70
+msgid "Details"
 msgstr "Detalhes"
 
-#: admin.py:130
+#: admin.py:134
 msgid "object"
 msgstr "item"
 
-#: admin.py:148
+#: admin.py:152
 msgid "user"
 msgstr "usuário"
 
-#: admin.py:166
+#: admin.py:172
 msgid "change message"
-msgstr "alteração"
+msgstr "modificar mensagem"
