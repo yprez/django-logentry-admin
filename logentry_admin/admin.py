@@ -7,21 +7,21 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import force_text
 from django.utils.html import escape
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import pgettext_lazy, ugettext_lazy as _
 try:
     from django.urls import reverse, NoReverseMatch
 except ImportError:
     from django.core.urlresolvers import reverse, NoReverseMatch
 
 action_names = {
-    ADDITION: _('Addition'),
-    DELETION: _('Deletion'),
-    CHANGE: _('Change'),
+    ADDITION: pgettext_lazy('logentry_admin:action_type', 'Addition'),
+    DELETION: pgettext_lazy('logentry_admin:action_type', 'Deletion'),
+    CHANGE: pgettext_lazy('logentry_admin:action_type', 'Change'),
 }
 
 
 class ActionListFilter(admin.SimpleListFilter):
-    title = _('Action')
+    title = _('action')
     parameter_name = 'action_flag'
 
     def lookups(self, request, model_admin):
@@ -67,7 +67,7 @@ class LogEntryAdmin(admin.ModelAdmin):
                 'object_link',
             )
         }),
-        (_('Detail'), {
+        (_('Details'), {
             'fields': (
                 'get_change_message',
                 'content_type',
@@ -163,7 +163,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     def action_description(self, obj):
         return action_names[obj.action_flag]
-    action_description.short_description = _('Action')
+    action_description.short_description = _('action')
 
     def get_change_message(self, obj):
         if django.VERSION >= (1, 10):
