@@ -8,10 +8,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import force_text
 from django.utils.html import escape
 from django.utils.translation import pgettext_lazy, ugettext_lazy as _
+from django.utils.safestring import mark_safe
+
+
 try:
     from django.urls import reverse, NoReverseMatch
 except ImportError:
     from django.core.urlresolvers import reverse, NoReverseMatch
+
 
 action_names = {
     ADDITION: pgettext_lazy('logentry_admin:action_type', 'Addition'),
@@ -128,8 +132,7 @@ class LogEntryAdmin(admin.ModelAdmin):
                 object_link = '<a href="{}">{}</a>'.format(url, object_link)
             except NoReverseMatch:
                 pass
-        return object_link
-    object_link.allow_tags = True
+        return mark_safe(object_link)
     object_link.admin_order_field = 'object_repr'
     object_link.short_description = _('object')
 
@@ -146,8 +149,7 @@ class LogEntryAdmin(admin.ModelAdmin):
             user_link = '<a href="{}">{}</a>'.format(url, user_link)
         except NoReverseMatch:
             pass
-        return user_link
-    user_link.allow_tags = True
+        return mark_safe(user_link)
     user_link.admin_order_field = 'user'
     user_link.short_description = _('user')
 
