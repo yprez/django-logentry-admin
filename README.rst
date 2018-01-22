@@ -19,18 +19,23 @@ Supported versions
 Installation
 ============
 
-Install by using pip or easy_install::
+Install by using pip or easy_install:
+
+.. code-block:: bash
 
   pip install django-logentry-admin
 
-Or install from source::
+Or install from source:
+
+.. code-block:: bash
 
     git clone git@github.com:yprez/django-logentry-admin.git
     cd django-logentry-admin
     python setup.py install
 
-To add this application into your project, just add it to your
-``INSTALLED_APPS`` setting::
+To add this application into your project, just add it to your ``INSTALLED_APPS`` setting:
+
+.. code-block:: python
 
     INSTALLED_APPS = (
         ...
@@ -42,16 +47,22 @@ To add this application into your project, just add it to your
 Running tests
 =============
 
-Test on all Python / Django versions with tox::
+Test on all Python / Django versions with tox:
+
+.. code-block:: bash
 
    $ pip install tox
    $ tox
 
-Or just a specific Django / Python version::
+Or just a specific Django / Python version:
+
+.. code-block:: bash
 
     $ tox -e py35-django19
 
-Or run on multiple CPUs in parallel with detox to make it faster::
+Or run on multiple CPUs in parallel with detox to make it faster:
+
+.. code-block:: bash
 
     $ pip install detox
     $ detox
