@@ -7,6 +7,7 @@ python:
 sudo: false
 
 install:
+  - pip install -U packaging  # fix for Python3.4 build
   - pip install tox tox-travis coveralls
 script:
   - tox
