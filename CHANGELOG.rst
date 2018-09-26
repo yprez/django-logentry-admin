@@ -6,6 +6,7 @@ Current
 =======
 
 * Test on Python 3.7.
+* Add tests for Django 2.1.
 
 
 v1.0.4 - 17/06/2018
