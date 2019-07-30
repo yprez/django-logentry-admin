@@ -1,1 +1,2 @@
 include *.txt *.rst
+recursive-include logentry_admin/locale *.po
