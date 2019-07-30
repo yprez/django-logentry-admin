@@ -2,8 +2,8 @@
 Changelog
 =========
 
-Current
-=======
+v1.0.5 - 30/07/2019
+===================
 
 * Test on Python 3.7.
 * Add tests for Django 2.1.
