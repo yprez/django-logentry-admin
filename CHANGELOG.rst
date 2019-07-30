@@ -2,13 +2,14 @@
 Changelog
 =========
 
-Current
-=======
+v1.0.5 - 30/07/2019
+===================
 
 * Test on Python 3.7.
 * Add tests for Django 2.1.
 * Add tests for Django 2.2.
 * Remove tests for Django 1.7.
+* Fix translations, include locale files in the package.
 
 
 v1.0.4 - 17/06/2018
