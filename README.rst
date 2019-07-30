@@ -12,7 +12,7 @@ Originally based on: `Django snippet 2484 <http://djangosnippets.org/snippets/24
 Supported versions
 ==================
 
-* Django 2.1, 2.0, 1.11, 1.10, 1.9, 1.8, 1.7
+* Django 2.2, 2.1, 2.0, 1.11, 1.10, 1.9, 1.8
 * Python 3.7, 3.6, 3.5, 3.4, 2.7
 
 
