@@ -13,6 +13,9 @@ jobs:
     - python: 3.7
       dist: xenial
       sudo: true
+    - python: 3.8
+      dist: xenial
+      sudo: true
 
 install:
   - pip install -U packaging  # fix for Python3.4 build
