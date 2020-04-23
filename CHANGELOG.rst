@@ -2,6 +2,12 @@
 Changelog
 =========
 
+v1.0.6 - 23/04/2020
+===================
+
+* Fix including locale files in wheel package.
+
+
 v1.0.5 - 30/07/2019
 ===================
 

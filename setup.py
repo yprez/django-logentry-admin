@@ -12,11 +12,15 @@ setup(
     name='django-logentry-admin',
     author='Yuri Prezument',
     author_email='y@yprez.com',
-    version='1.0.5',
+    version='1.0.6',
     packages=['logentry_admin'],
     package_data={
-        'logentry_admin': ['templates/admin/admin/logentry/change_form.html']
+        'logentry_admin': [
+            'templates/admin/admin/logentry/change_form.html',
+            '*.po',
+        ],
     },
+    include_package_data=True,
     license='ISC',
     url='https://github.com/yprez/django-logentry-admin',
     description='Show all LogEntry objects in the Django admin site.',
