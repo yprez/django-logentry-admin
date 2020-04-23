@@ -5,6 +5,7 @@ Changelog
 v1.0.6 - 23/04/2020
 ===================
 
+* Add tests for Python 3.8, Django 3.0.
 * Fix including locale files in wheel package.
 
 
