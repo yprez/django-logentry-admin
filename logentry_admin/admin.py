@@ -5,11 +5,16 @@ from django.contrib import admin
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
-from django.utils.encoding import force_text
 from django.utils.html import escape
-from django.utils.translation import pgettext_lazy, ugettext_lazy as _
 from django.utils.safestring import mark_safe
+from django.utils.translation import pgettext_lazy
 
+if django.VERSION[0] < 2:
+    from django.utils.encoding import force_text as force_str
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.encoding import force_str
+    from django.utils.translation import gettext_lazy as _
 
 try:
     from django.urls import reverse, NoReverseMatch
@@ -44,7 +49,7 @@ class UserListFilter(admin.SimpleListFilter):
     def lookups(self, request, model_admin):
         staff = get_user_model().objects.filter(is_staff=True)
         return (
-            (s.id, force_text(s))
+            (s.id, force_str(s))
             for s in staff
         )
 
@@ -138,7 +143,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     def user_link(self, obj):
         content_type = ContentType.objects.get_for_model(type(obj.user))
-        user_link = escape(force_text(obj.user))
+        user_link = escape(force_str(obj.user))
         try:
             # try returning an actual link instead of object repr string
             url = reverse(
