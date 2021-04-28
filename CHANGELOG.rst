@@ -6,6 +6,7 @@ v1.0.7 - Unreleased
 ===================
 
 * Add tests for Django 3.1.
+* Fix failing tests for Django 2.2.
 
 
 v1.0.6 - 23/04/2020
