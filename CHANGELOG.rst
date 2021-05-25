@@ -6,7 +6,10 @@ v1.0.7 - Unreleased
 ===================
 
 * Add tests for Django 3.1.
+* Add tests for Django 3.2 LTS.
+* Test on Python 3.9 (for Django versions 2.2 LTS to present (3.2 LTS))
 * Fix failing tests for Django 2.2.
+* Fix failing lint test
 
 
 v1.0.6 - 23/04/2020

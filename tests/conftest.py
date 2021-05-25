@@ -1,3 +1,5 @@
+import random
+
 from django.conf import settings
 
 
@@ -34,4 +36,8 @@ def pytest_configure():
                 ],
             },
         }],
+        SECRET_KEY=''.join(
+            random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)")
+            for _ in range(50)
+        ),
     )
