@@ -12,7 +12,7 @@ setup(
     name='django-logentry-admin',
     author='Yuri Prezument',
     author_email='y@yprez.com',
-    version='1.0.6',
+    version='1.1.0',
     packages=['logentry_admin'],
     package_data={
         'logentry_admin': [
@@ -26,7 +26,7 @@ setup(
     description='Show all LogEntry objects in the Django admin site.',
     long_description='\n\n'.join([readme, changelog]),
     install_requires=[
-        'Django>=1.7',
+        'Django>=2.2',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',

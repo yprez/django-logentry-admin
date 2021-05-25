@@ -2,14 +2,14 @@
 Changelog
 =========
 
-v1.0.7 - Unreleased
+
+v1.1.0 - Unreleased
 ===================
 
-* Add tests for Django 3.1.
-* Add tests for Django 3.2 LTS.
-* Test on Python 3.9 (for Django versions 2.2 LTS to present (3.2 LTS))
-* Fix failing tests for Django 2.2.
-* Fix failing lint test
+* Add tests/support for Django 3.2, 3.1.
+* Add tests/support for Python 3.9.
+* Drop support for Python 2.7, 3.4.
+* Drop support for Django 1.x, 2.0, 2.1.
 
 
 v1.0.6 - 23/04/2020
