@@ -1,25 +1,13 @@
-from __future__ import unicode_literals
-
-import django
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
+from django.urls import reverse, NoReverseMatch
+from django.utils.encoding import force_str
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
-
-if django.VERSION[0] < 2:
-    from django.utils.encoding import force_text as force_str
-    from django.utils.translation import ugettext_lazy as _
-else:
-    from django.utils.encoding import force_str
-    from django.utils.translation import gettext_lazy as _
-
-try:
-    from django.urls import reverse, NoReverseMatch
-except ImportError:
-    from django.core.urlresolvers import reverse, NoReverseMatch
 
 
 action_names = {
@@ -164,8 +152,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     def get_actions(self, request):
         actions = super(LogEntryAdmin, self).get_actions(request)
-        if 'delete_selected' in actions:
-            del actions['delete_selected']
+        actions.pop('delete_selected', None)
         return actions
 
     def action_description(self, obj):
@@ -173,8 +160,7 @@ class LogEntryAdmin(admin.ModelAdmin):
     action_description.short_description = _('action')
 
     def get_change_message(self, obj):
-        if django.VERSION >= (1, 10):
-            return obj.get_change_message()
+        # TODO: is this still required in newer Django versions?
         return obj.change_message
     get_change_message.short_description = _('change message')
 
