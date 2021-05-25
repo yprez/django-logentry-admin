@@ -3,7 +3,7 @@ Changelog
 =========
 
 
-v1.1.0 - Unreleased
+v1.1.0 - 25/05/2021
 ===================
 
 * Add tests/support for Django 3.2, 3.1.
