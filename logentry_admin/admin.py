@@ -1,6 +1,3 @@
-from __future__ import unicode_literals
-
-import django
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.contrib.auth import get_user_model
