@@ -155,8 +155,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     def get_actions(self, request):
         actions = super(LogEntryAdmin, self).get_actions(request)
-        if 'delete_selected' in actions:
-            del actions['delete_selected']
+        actions.pop('delete_selected', None)
         return actions
 
     def action_description(self, obj):
@@ -164,8 +163,7 @@ class LogEntryAdmin(admin.ModelAdmin):
     action_description.short_description = _('action')
 
     def get_change_message(self, obj):
-        if django.VERSION >= (1, 10):
-            return obj.get_change_message()
+        # TODO: is this still required in newer Django versions?
         return obj.change_message
     get_change_message.short_description = _('change message')
 
