@@ -5,21 +5,12 @@ from django.contrib import admin
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
+from django.urls import reverse, NoReverseMatch
+from django.utils.encoding import force_str
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
-
-if django.VERSION[0] < 2:
-    from django.utils.encoding import force_text as force_str
-    from django.utils.translation import ugettext_lazy as _
-else:
-    from django.utils.encoding import force_str
-    from django.utils.translation import gettext_lazy as _
-
-try:
-    from django.urls import reverse, NoReverseMatch
-except ImportError:
-    from django.core.urlresolvers import reverse, NoReverseMatch
 
 
 action_names = {
