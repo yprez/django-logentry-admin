@@ -19,7 +19,8 @@ adds the whole log to the admin:
   be added, changed or deleted
 
 Superusers see the log, and so do staff users with the "Can view log
-entry" permission.
+entry" or "Can change log entry" permission. Either one only lets them
+read it.
 
 Originally based on `Django snippet 2484 <https://djangosnippets.org/snippets/2484/>`_.
 
