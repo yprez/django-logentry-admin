@@ -10,15 +10,15 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
 action_names = {
-    ADDITION: pgettext_lazy('logentry_admin:action_type', 'Addition'),
-    DELETION: pgettext_lazy('logentry_admin:action_type', 'Deletion'),
-    CHANGE: pgettext_lazy('logentry_admin:action_type', 'Change'),
+    ADDITION: pgettext_lazy("logentry_admin:action_type", "Addition"),
+    DELETION: pgettext_lazy("logentry_admin:action_type", "Deletion"),
+    CHANGE: pgettext_lazy("logentry_admin:action_type", "Change"),
 }
 
 
 class ActionListFilter(admin.SimpleListFilter):
-    title = _('action')
-    parameter_name = 'action_flag'
+    title = _("action")
+    parameter_name = "action_flag"
 
     def lookups(self, request, model_admin):
         return action_names.items()
@@ -30,71 +30,78 @@ class ActionListFilter(admin.SimpleListFilter):
 
 
 class UserListFilter(admin.SimpleListFilter):
-    title = _('staff user')
-    parameter_name = 'user'
+    title = _("staff user")
+    parameter_name = "user"
 
     def lookups(self, request, model_admin):
         staff = get_user_model().objects.filter(is_staff=True)
-        return (
-            (s.id, force_str(s))
-            for s in staff
-        )
+        return ((s.id, force_str(s)) for s in staff)
 
     def queryset(self, request, queryset):
         if self.value():
-            queryset = queryset.filter(user_id=self.value(),
-                                       user__is_staff=True)
+            queryset = queryset.filter(
+                user_id=self.value(), user__is_staff=True
+            )
         return queryset
 
 
 class LogEntryAdmin(admin.ModelAdmin):
-    date_hierarchy = 'action_time'
+    date_hierarchy = "action_time"
 
-    readonly_fields = ([f.name for f in LogEntry._meta.fields] +
-                       ['object_link', 'action_description', 'user_link',
-                        'get_change_message'])
+    readonly_fields = [f.name for f in LogEntry._meta.fields] + [
+        "object_link",
+        "action_description",
+        "user_link",
+        "get_change_message",
+    ]
 
     fieldsets = (
-        (_('Metadata'), {
-            'fields': (
-                'action_time',
-                'user_link',
-                'action_description',
-                'object_link',
-            )
-        }),
-        (_('Details'), {
-            'fields': (
-                'get_change_message',
-                'content_type',
-                'object_id',
-                'object_repr',
-            )
-        }),
+        (
+            _("Metadata"),
+            {
+                "fields": (
+                    "action_time",
+                    "user_link",
+                    "action_description",
+                    "object_link",
+                )
+            },
+        ),
+        (
+            _("Details"),
+            {
+                "fields": (
+                    "get_change_message",
+                    "content_type",
+                    "object_id",
+                    "object_repr",
+                )
+            },
+        ),
     )
 
     list_filter = (
         UserListFilter,
-        'content_type',
+        "content_type",
         ActionListFilter,
     )
 
     search_fields = (
-        'object_repr',
-        'change_message',
+        "object_repr",
+        "change_message",
     )
 
     list_display_links = (
-        'action_time',
-        'get_change_message',
+        "action_time",
+        "get_change_message",
     )
     list_display = (
-        'action_time',
-        'user_link',
-        'content_type',
-        'object_link',
-        'action_description',
-        'get_change_message',
+        "action_time",
+        "user_link",
+        "content_type",
+        "object_link",
+        "action_description",
+        "get_change_message",
     )
 
     def has_add_permission(self, request):
@@ -102,9 +109,9 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return (
-            request.user.is_superuser or
-            request.user.has_perm('admin.change_logentry')
-        ) and request.method != 'POST'
+            request.user.is_superuser
+            or request.user.has_perm("admin.change_logentry")
+        ) and request.method != "POST"
 
     def has_delete_permission(self, request, obj=None):
         return False
@@ -117,15 +124,16 @@ class LogEntryAdmin(admin.ModelAdmin):
             # try returning an actual link instead of object repr string
             try:
                 url = reverse(
-                    f'admin:{content_type.app_label}_{content_type.model}_change',
-                    args=[obj.object_id]
+                    f"admin:{content_type.app_label}_{content_type.model}_change",
+                    args=[obj.object_id],
                 )
                 object_link = f'<a href="{url}">{object_link}</a>'
             except NoReverseMatch:
                 pass
         return mark_safe(object_link)
-    object_link.admin_order_field = 'object_repr'
-    object_link.short_description = _('object')
+
+    object_link.admin_order_field = "object_repr"
+    object_link.short_description = _("object")
 
     def user_link(self, obj):
         content_type = ContentType.objects.get_for_model(type(obj.user))
@@ -133,33 +141,36 @@ class LogEntryAdmin(admin.ModelAdmin):
         try:
             # try returning an actual link instead of object repr string
             url = reverse(
-                f'admin:{content_type.app_label}_{content_type.model}_change',
-                args=[obj.user.pk]
+                f"admin:{content_type.app_label}_{content_type.model}_change",
+                args=[obj.user.pk],
             )
             user_link = f'<a href="{url}">{user_link}</a>'
         except NoReverseMatch:
             pass
         return mark_safe(user_link)
-    user_link.admin_order_field = 'user'
-    user_link.short_description = _('user')
+
+    user_link.admin_order_field = "user"
+    user_link.short_description = _("user")
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        return queryset.prefetch_related('content_type')
+        return queryset.prefetch_related("content_type")
 
     def get_actions(self, request):
         actions = super().get_actions(request)
-        actions.pop('delete_selected', None)
+        actions.pop("delete_selected", None)
         return actions
 
     def action_description(self, obj):
         return action_names[obj.action_flag]
-    action_description.short_description = _('action')
+
+    action_description.short_description = _("action")
 
     def get_change_message(self, obj):
         # TODO: is this still required in newer Django versions?
         return obj.change_message
-    get_change_message.short_description = _('change message')
+
+    get_change_message.short_description = _("change message")
 
 
 admin.site.register(LogEntry, LogEntryAdmin)
