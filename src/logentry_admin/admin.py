@@ -2,6 +2,7 @@
 
 from django.contrib import admin
 from django.contrib.admin.models import ADDITION, CHANGE, DELETION, LogEntry
+from django.contrib.admin.utils import quote
 from django.contrib.auth import get_user_model
 from django.urls import NoReverseMatch, reverse
 from django.utils.html import format_html
@@ -145,7 +146,7 @@ class LogEntryAdmin(admin.ModelAdmin):
         try:
             return reverse(
                 f"{self.admin_site.name}:{app_label}_{model_name}_change",
-                args=[object_id],
+                args=[quote(object_id)],
             )
         except NoReverseMatch:
             return None

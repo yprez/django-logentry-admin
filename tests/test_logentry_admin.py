@@ -1,3 +1,5 @@
+import re
+
 import pytest
 from django.contrib import admin
 from django.contrib.admin.models import ADDITION, CHANGE, DELETION, LogEntry
@@ -10,7 +12,7 @@ from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 
 from logentry_admin.admin import ActionListFilter, UserListFilter
-from tests.models import Member
+from tests.models import Batch, Member
 from tests.urls import other_site
 
 CHANGELIST_URL = "/admin/admin/logentry/"
@@ -300,6 +302,22 @@ class TestObjectLink:
 
         url = reverse("other_admin:auth_user_change", args=[admin_user.pk])
         assert link == f'<a href="{url}">admin</a>'
+
+    def test_link_opens_an_object_with_a_text_key(
+        self, admin_client, model_admin, make_entry
+    ):
+        """The admin decodes "_26" in a key as "&" unless it is quoted."""
+        batch = Batch.objects.create(code="batch_26")
+        entry = make_entry(
+            content_type=ContentType.objects.get_for_model(Batch),
+            object_id=batch.pk,
+        )
+        (url,) = re.findall(r'href="([^"]+)"', model_admin.object_link(entry))
+
+        response = admin_client.get(url)
+
+        assert response.status_code == 200
+        assert response.context["original"] == batch
 
     def test_deleted_object_is_not_linked(self, model_admin, make_entry):
         entry = make_entry(object_repr="gone", action_flag=DELETION)
