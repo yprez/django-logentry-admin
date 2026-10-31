@@ -3,7 +3,7 @@ Changelog
 =========
 
 
-v1.2.0 - unreleased
+v1.2.0 - 31/10/2026
 ===================
 
 * Add support for Django 5.2, 6.0 and 6.1, and Python 3.10 to 3.14.
