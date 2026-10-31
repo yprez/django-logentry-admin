@@ -144,11 +144,6 @@ class LogEntryAdmin(admin.ModelAdmin):
     user_link.admin_order_field = "user"
     user_link.short_description = _("user")
 
-    def get_actions(self, request):
-        actions = super().get_actions(request)
-        actions.pop("delete_selected", None)
-        return actions
-
     def action_description(self, obj):
         return action_names[obj.action_flag]
 

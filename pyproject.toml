@@ -66,6 +66,9 @@ pythonpath = ["."]
 addopts = ["--strict-config", "--strict-markers"]
 testpaths = ["tests"]
 xfail_strict = true
+# A deprecation warning from Django fails the run, so an upcoming
+# removal shows up while the old API still works.
+filterwarnings = ["error"]
 
 [tool.ruff]
 line-length = 79
