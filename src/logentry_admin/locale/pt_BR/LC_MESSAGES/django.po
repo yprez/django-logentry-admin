@@ -19,7 +19,7 @@ msgstr ""
 #: admin.py:17
 msgctxt "logentry_admin:action_type"
 msgid "Addition"
-msgstr "Adiçao"
+msgstr "Adição"
 
 #: admin.py:18
 msgctxt "logentry_admin:action_type"
