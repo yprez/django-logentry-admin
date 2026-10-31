@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint and build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+      - name: Lint
+        run: uv run --locked ruff check --output-format=github
+      - name: Check formatting
+        run: uv run --locked ruff format --check
+      - name: Build the sdist and wheel
+        run: uv build
+
+  test:
+    name: Python ${{ matrix.python }}, Django ${{ matrix.django }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        django: ["5.2", "6.0", "6.1"]
+        exclude:
+          # Django 6.0 and later need Python 3.12 or later.
+          - { python: "3.10", django: "6.0" }
+          - { python: "3.10", django: "6.1" }
+          - { python: "3.11", django: "6.0" }
+          - { python: "3.11", django: "6.1" }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+        with:
+          python-version: ${{ matrix.python }}
+      # A non-editable install, so the tests run against the files the
+      # wheel ships rather than the checkout.
+      - name: Install
+        run: uv sync --locked --no-editable
+      - name: Test
+        run: >-
+          uv run --locked --no-editable
+          --with "django~=${{ matrix.django }}.0"
+          coverage run -m pytest
+      - name: Coverage
+        run: uv run --locked --no-editable coverage report

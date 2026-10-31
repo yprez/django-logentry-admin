@@ -2,7 +2,7 @@
 django-logentry-admin
 =====================
 
-|pypi-version|
+|ci| |pypi-version|
 
 Show all LogEntry objects in the Django admin site.
 
@@ -62,6 +62,9 @@ Run them against a particular Python and Django version:
 
     uv run --python 3.12 --with "django~=5.2.0" pytest
 
+
+.. |ci| image:: https://github.com/yprez/django-logentry-admin/actions/workflows/ci.yml/badge.svg?branch=master
+    :target: https://github.com/yprez/django-logentry-admin/actions/workflows/ci.yml
 
 .. |pypi-version| image:: https://img.shields.io/pypi/v/django-logentry-admin.svg
     :target: https://pypi.org/project/django-logentry-admin/
