@@ -6,7 +6,22 @@ django-logentry-admin
 
 Show all LogEntry objects in the Django admin site.
 
-Originally based on: `Django snippet 2484 <http://djangosnippets.org/snippets/2484/>`_
+Django records every addition, change and deletion made through the
+admin, but only shows each user their own last few actions. This app
+adds the whole log to the admin:
+
+* a list of every entry, filtered by staff user, content type and
+  action, searchable by object and change message, and browsable by
+  date
+* links from each entry to the object and the user it concerns, on
+  the admin site you are using
+* a read-only page per entry, since the log is a record: entries cannot
+  be added, changed or deleted
+
+Superusers see the log, and so do staff users with the "Can view log
+entry" permission.
+
+Originally based on `Django snippet 2484 <https://djangosnippets.org/snippets/2484/>`_.
 
 
 Supported versions
@@ -33,15 +48,18 @@ Or install from source:
     cd django-logentry-admin
     pip install .
 
-To add this application into your project, just add it to your ``INSTALLED_APPS`` setting:
+Then add it to ``INSTALLED_APPS``:
 
 .. code-block:: python
 
-    INSTALLED_APPS = (
+    INSTALLED_APPS = [
         ...
-        'logentry_admin',
-    )
+        "logentry_admin",
+    ]
 
+The log appears in the admin under "Administration", as "Log entries".
+It is translated into Azerbaijani, Brazilian Portuguese, Esperanto and
+Russian.
 
 
 Development
