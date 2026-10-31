@@ -167,8 +167,7 @@ class LogEntryAdmin(admin.ModelAdmin):
     action_description.short_description = _("action")
 
     def get_change_message(self, obj):
-        # TODO: is this still required in newer Django versions?
-        return obj.change_message
+        return obj.get_change_message()
 
     get_change_message.short_description = _("change message")
 

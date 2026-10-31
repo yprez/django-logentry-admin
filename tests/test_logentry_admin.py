@@ -137,6 +137,26 @@ class TestChangelist:
 
         assert listed_reprs(response) == {"Invoice 17"}
 
+    @pytest.mark.parametrize(
+        ("stored", "shown"),
+        [
+            pytest.param(
+                '[{"changed": {"fields": ["Email address"]}}]',
+                "Changed Email address.",
+                id="json-from-the-admin",
+            ),
+            pytest.param("Changed email.", "Changed email.", id="plain-text"),
+        ],
+    )
+    def test_shows_the_change_message_as_text(
+        self, admin_client, make_entry, stored, shown
+    ):
+        make_entry(change_message=stored)
+
+        response = admin_client.get(CHANGELIST_URL)
+
+        assert shown in response.content.decode()
+
     def test_offers_no_bulk_actions(self, admin_client, make_entry):
         make_entry()
 
