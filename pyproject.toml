@@ -37,6 +37,13 @@ Homepage = "https://github.com/yprez/django-logentry-admin"
 Changelog = "https://github.com/yprez/django-logentry-admin/blob/master/CHANGELOG.rst"
 Issues = "https://github.com/yprez/django-logentry-admin/issues"
 
+[dependency-groups]
+dev = [
+    "coverage>=7.10",
+    "pytest>=9.0",
+    "pytest-django>=4.11",
+]
+
 [tool.setuptools]
 packages = ["logentry_admin"]
 
@@ -49,3 +56,19 @@ logentry_admin = [
     "locale/*/LC_MESSAGES/*.po",
     "locale/*/LC_MESSAGES/*.mo",
 ]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+django_find_project = false
+pythonpath = ["."]
+addopts = ["--strict-config", "--strict-markers"]
+testpaths = ["tests"]
+xfail_strict = true
+
+[tool.coverage.run]
+branch = true
+source_pkgs = ["logentry_admin"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true

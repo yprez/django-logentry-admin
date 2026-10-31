@@ -44,27 +44,23 @@ To add this application into your project, just add it to your ``INSTALLED_APPS`
 
 
 
-Running tests
-=============
+Development
+===========
 
-Test on all Python / Django versions with tox:
-
-.. code-block:: bash
-
-   $ pip install tox
-   $ tox
-
-Or just a specific Django / Python version:
+The project uses `uv <https://docs.astral.sh/uv/>`_. Set up the
+environment and run the tests with coverage:
 
 .. code-block:: bash
 
-    $ tox -e py314-django61
+    uv sync
+    uv run coverage run -m pytest
+    uv run coverage report
 
-Or run the environments in parallel:
+Run them against a particular Python and Django version:
 
 .. code-block:: bash
 
-    $ tox run-parallel
+    uv run --python 3.12 --with "django~=5.2.0" pytest
 
 
 .. |pypi-version| image:: https://img.shields.io/pypi/v/django-logentry-admin.svg
