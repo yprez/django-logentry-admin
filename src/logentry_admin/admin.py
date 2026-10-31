@@ -1,11 +1,10 @@
+"""A read-only admin for the log of actions taken in the Django admin."""
+
 from django.contrib import admin
 from django.contrib.admin.models import ADDITION, CHANGE, DELETION, LogEntry
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
 from django.urls import NoReverseMatch, reverse
-from django.utils.encoding import force_str
-from django.utils.html import escape
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -17,6 +16,8 @@ action_names = {
 
 
 class ActionListFilter(admin.SimpleListFilter):
+    """Filter the log by action: addition, change or deletion."""
+
     title = _("action")
     parameter_name = "action_flag"
 
@@ -30,12 +31,14 @@ class ActionListFilter(admin.SimpleListFilter):
 
 
 class UserListFilter(admin.SimpleListFilter):
+    """Filter the log by the staff user who took the action."""
+
     title = _("staff user")
     parameter_name = "user"
 
     def lookups(self, request, model_admin):
         staff = get_user_model().objects.filter(is_staff=True)
-        return ((s.pk, force_str(s)) for s in staff)
+        return [(user.pk, str(user)) for user in staff]
 
     def queryset(self, request, queryset):
         if self.value():
@@ -45,7 +48,11 @@ class UserListFilter(admin.SimpleListFilter):
         return queryset
 
 
+@admin.register(LogEntry)
 class LogEntryAdmin(admin.ModelAdmin):
+    """List and show log entries, which cannot be added, changed or
+    deleted."""
+
     date_hierarchy = "action_time"
 
     fieldsets = (
@@ -108,53 +115,43 @@ class LogEntryAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
+    @admin.display(description=_("object"), ordering="object_repr")
     def object_link(self, obj):
-        object_link = escape(obj.object_repr)
         content_type = obj.content_type
-
+        url = None
         if obj.action_flag != DELETION and content_type is not None:
-            # try returning an actual link instead of object repr string
-            try:
-                url = reverse(
-                    f"{self.admin_site.name}:"
-                    f"{content_type.app_label}_{content_type.model}_change",
-                    args=[obj.object_id],
-                )
-                object_link = f'<a href="{url}">{object_link}</a>'
-            except NoReverseMatch:
-                pass
-        return mark_safe(object_link)
-
-    object_link.admin_order_field = "object_repr"
-    object_link.short_description = _("object")
-
-    def user_link(self, obj):
-        content_type = ContentType.objects.get_for_model(type(obj.user))
-        user_link = escape(force_str(obj.user))
-        try:
-            # try returning an actual link instead of object repr string
-            url = reverse(
-                f"{self.admin_site.name}:"
-                f"{content_type.app_label}_{content_type.model}_change",
-                args=[obj.user.pk],
+            url = self._change_url(
+                content_type.app_label, content_type.model, obj.object_id
             )
-            user_link = f'<a href="{url}">{user_link}</a>'
-        except NoReverseMatch:
-            pass
-        return mark_safe(user_link)
+        return self._link(url, obj.object_repr)
 
-    user_link.admin_order_field = "user"
-    user_link.short_description = _("user")
+    @admin.display(description=_("user"), ordering="user")
+    def user_link(self, obj):
+        opts = obj.user._meta
+        url = self._change_url(opts.app_label, opts.model_name, obj.user.pk)
+        return self._link(url, obj.user)
 
+    @admin.display(description=_("action"))
     def action_description(self, obj):
         return action_names[obj.action_flag]
 
-    action_description.short_description = _("action")
-
+    @admin.display(description=_("change message"))
     def get_change_message(self, obj):
         return obj.get_change_message()
 
-    get_change_message.short_description = _("change message")
+    def _change_url(self, app_label, model_name, object_id):
+        """Return the object's change page on this admin site, or None
+        when the site does not register its model."""
+        try:
+            return reverse(
+                f"{self.admin_site.name}:{app_label}_{model_name}_change",
+                args=[object_id],
+            )
+        except NoReverseMatch:
+            return None
 
-
-admin.site.register(LogEntry, LogEntryAdmin)
+    @staticmethod
+    def _link(url, text):
+        if url is None:
+            return format_html("{}", text)
+        return format_html('<a href="{}">{}</a>', url, text)
