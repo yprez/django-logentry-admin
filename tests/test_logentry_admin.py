@@ -4,6 +4,8 @@ from django.contrib.admin.models import ADDITION, CHANGE, DELETION, LogEntry
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.checks import run_checks
+from django.db import connection
+from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 
 from logentry_admin.admin import ActionListFilter, UserListFilter
@@ -156,6 +158,21 @@ class TestChangelist:
         response = admin_client.get(CHANGELIST_URL)
 
         assert shown in response.content.decode()
+
+    def test_query_count_does_not_grow_with_the_entries(
+        self, admin_client, make_entry, make_staff_user
+    ):
+        def changelist_queries():
+            with CaptureQueriesContext(connection) as queries:
+                admin_client.get(CHANGELIST_URL)
+            return len(queries)
+
+        make_entry(user=make_staff_user("first"))
+        one_entry = changelist_queries()
+        for username in ("second", "third", "fourth"):
+            make_entry(user=make_staff_user(username))
+
+        assert changelist_queries() == one_entry
 
     def test_offers_no_bulk_actions(self, admin_client, make_entry):
         make_entry()

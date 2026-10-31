@@ -91,6 +91,8 @@ class LogEntryAdmin(admin.ModelAdmin):
         "change_message",
     )
 
+    list_select_related = ("content_type", "user")
+
     list_display_links = (
         "action_time",
         "get_change_message",
@@ -151,10 +153,6 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     user_link.admin_order_field = "user"
     user_link.short_description = _("user")
-
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        return queryset.prefetch_related("content_type")
 
     def get_actions(self, request):
         actions = super().get_actions(request)
