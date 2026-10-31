@@ -96,7 +96,7 @@ merge, then publish a GitHub release tagged ``v<version>``. The release
 workflow builds it and uploads it to PyPI.
 
 
-.. |ci| image:: https://github.com/yprez/django-logentry-admin/actions/workflows/ci.yml/badge.svg?branch=master
+.. |ci| image:: https://github.com/yprez/django-logentry-admin/actions/workflows/ci.yml/badge.svg?branch=main
     :target: https://github.com/yprez/django-logentry-admin/actions/workflows/ci.yml
 
 .. |pypi-version| image:: https://img.shields.io/pypi/v/django-logentry-admin.svg

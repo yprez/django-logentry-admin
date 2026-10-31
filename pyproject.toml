@@ -34,7 +34,7 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/yprez/django-logentry-admin"
-Changelog = "https://github.com/yprez/django-logentry-admin/blob/master/CHANGELOG.rst"
+Changelog = "https://github.com/yprez/django-logentry-admin/blob/main/CHANGELOG.rst"
 Issues = "https://github.com/yprez/django-logentry-admin/issues"
 
 [dependency-groups]
