@@ -48,13 +48,6 @@ class UserListFilter(admin.SimpleListFilter):
 class LogEntryAdmin(admin.ModelAdmin):
     date_hierarchy = "action_time"
 
-    readonly_fields = [f.name for f in LogEntry._meta.fields] + [
-        "object_link",
-        "action_description",
-        "user_link",
-        "get_change_message",
-    ]
-
     fieldsets = (
         (
             _("Metadata"),
@@ -110,10 +103,7 @@ class LogEntryAdmin(admin.ModelAdmin):
         return False
 
     def has_change_permission(self, request, obj=None):
-        return (
-            request.user.is_superuser
-            or request.user.has_perm("admin.change_logentry")
-        ) and request.method != "POST"
+        return False
 
     def has_delete_permission(self, request, obj=None):
         return False

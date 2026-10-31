@@ -203,6 +203,15 @@ class TestDetailPage:
         history_url = reverse("admin:admin_logentry_history", args=[entry.pk])
         assert history_url not in response.content.decode()
 
+    def test_offers_no_save_button(self, admin_client, make_entry):
+        entry = make_entry()
+
+        response = admin_client.get(
+            reverse("admin:admin_logentry_change", args=[entry.pk])
+        )
+
+        assert 'name="_save"' not in response.content.decode()
+
 
 class TestPermissions:
     def test_user_with_view_permission_sees_the_log(
