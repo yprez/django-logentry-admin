@@ -10,8 +10,13 @@ from django.db import connection
 from django.test import override_settings
 from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
+from django.utils import translation
 
-from logentry_admin.admin import ActionListFilter, UserListFilter
+from logentry_admin.admin import (
+    ActionListFilter,
+    UserListFilter,
+    action_names,
+)
 from tests.models import Batch, Member
 from tests.urls import other_site
 
@@ -390,3 +395,23 @@ def test_action_description(model_admin, action_flag, description):
     entry = LogEntry(action_flag=action_flag)
 
     assert model_admin.action_description(entry) == description
+
+
+@pytest.mark.parametrize(
+    ("language", "staff_user", "change"),
+    [
+        ("az", "əməkdaşlar", "Dəyişiklik"),
+        ("eo", "personarano", "Modifo"),
+        ("pt-br", "usuário administrativo", "Alteração"),
+        ("ru", "персонал", "Изменение"),
+    ],
+)
+def test_translations_ship_with_the_package(language, staff_user, change):
+    """The package's own catalogs load, the ones with a context too.
+
+    Django's catalog has "Change" only as a verb, which is why the
+    action names carry a context of their own.
+    """
+    with translation.override(language):
+        assert str(UserListFilter.title) == staff_user
+        assert str(action_names[CHANGE]) == change

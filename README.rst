@@ -62,6 +62,16 @@ Run them against a particular Python and Django version:
 
     uv run --python 3.12 --with "django~=5.2.0" pytest
 
+The translations need GNU gettext. After changing a message in the code,
+update the catalogs, translate, compile them and commit both the ``.po``
+and ``.mo`` files; CI checks that they match:
+
+.. code-block:: bash
+
+    cd src/logentry_admin
+    uv run django-admin makemessages --all
+    uv run django-admin compilemessages
+
 To release, set the new version in ``pyproject.toml`` and the changelog,
 merge, then publish a GitHub release tagged ``v<version>``. The release
 workflow builds it and uploads it to PyPI.

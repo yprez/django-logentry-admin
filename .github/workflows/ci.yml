@@ -25,6 +25,15 @@ jobs:
         run: uv run --locked ruff check --output-format=github
       - name: Check formatting
         run: uv run --locked ruff format --check
+      - name: Check the compiled translations match their catalogs
+        run: |
+          command -v msgfmt || {
+            sudo apt-get update -q
+            sudo apt-get install -qy --no-install-recommends gettext
+          }
+          (cd src/logentry_admin && uv run --locked django-admin compilemessages)
+          git status --porcelain --untracked-files=all -- src/logentry_admin/locale
+          test -z "$(git status --porcelain --untracked-files=all -- src/logentry_admin/locale)"
       - name: Build the sdist and wheel
         run: uv build
 
