@@ -62,6 +62,10 @@ Run them against a particular Python and Django version:
 
     uv run --python 3.12 --with "django~=5.2.0" pytest
 
+To release, set the new version in ``pyproject.toml`` and the changelog,
+merge, then publish a GitHub release tagged ``v<version>``. The release
+workflow builds it and uploads it to PyPI.
+
 
 .. |ci| image:: https://github.com/yprez/django-logentry-admin/actions/workflows/ci.yml/badge.svg?branch=master
     :target: https://github.com/yprez/django-logentry-admin/actions/workflows/ci.yml
