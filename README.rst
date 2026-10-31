@@ -12,8 +12,8 @@ Originally based on: `Django snippet 2484 <http://djangosnippets.org/snippets/24
 Supported versions
 ==================
 
-* Django 3.2, 3.1, 2.2
-* Python 3.9, 3.8, 3.7, 3.6, 3.5
+* Django 5.2, 6.0, 6.1
+* Python 3.10 to 3.14 (Django 6.0 and later need Python 3.12 or later)
 
 
 Installation
@@ -58,14 +58,13 @@ Or just a specific Django / Python version:
 
 .. code-block:: bash
 
-    $ tox -e py35-django19
+    $ tox -e py314-django61
 
-Or run on multiple CPUs in parallel with detox to make it faster:
+Or run the environments in parallel:
 
 .. code-block:: bash
 
-    $ pip install detox
-    $ detox
+    $ tox run-parallel
 
 
 .. |pypi-version| image:: https://img.shields.io/pypi/v/django-logentry-admin.svg
