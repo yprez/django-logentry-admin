@@ -74,11 +74,12 @@ environment and run the tests with coverage:
     uv run coverage run -m pytest
     uv run coverage report
 
-Run them against a particular Python and Django version:
+Run them against a particular Python and Django version, in a throwaway
+environment that leaves the one above as it is:
 
 .. code-block:: bash
 
-    uv run --python 3.12 --with "django~=5.2.0" pytest
+    uv run --isolated --python 3.12 --with "django~=5.2.0" pytest
 
 The translations need GNU gettext. After changing a message in the code,
 update the catalogs, translate, compile them and commit both the ``.po``

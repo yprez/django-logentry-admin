@@ -9,7 +9,8 @@ v1.2.0 - unreleased
 * Add support for Django 5.2, 6.0 and 6.1, and Python 3.10 to 3.14.
 * Drop support for Django older than 5.2 and Python older than 3.10.
 * Fix change messages showing as raw JSON (a regression in 1.1.0).
-* Fix the translations, which were never installed with the package.
+* Fix the translations, which never loaded: no release shipped the
+  compiled catalogs.
 * Fix the spelling of "Adição" in the Brazilian Portuguese translation.
 * Show each log entry on a read-only page, without Save buttons.
 * Fetch each entry's user with the list, instead of one query per row.
