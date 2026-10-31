@@ -1,103 +1,298 @@
 import pytest
+from django.contrib import admin
 from django.contrib.admin.models import ADDITION, CHANGE, DELETION, LogEntry
-from django.contrib.admin.sites import AdminSite
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
+from django.core.checks import run_checks
+from django.urls import reverse
 
-from logentry_admin.admin import LogEntryAdmin
+from logentry_admin.admin import ActionListFilter, UserListFilter
+
+CHANGELIST_URL = "/admin/admin/logentry/"
 
 
 @pytest.fixture
-def admin():
-    return LogEntryAdmin(LogEntry, AdminSite())
+def model_admin():
+    return admin.site.get_model_admin(LogEntry)
 
 
-def test_admin_list_apps(admin_client):
-    res = admin_client.get("/admin/")
-    assert res.status_code == 200
-    assert "Log entries" in res.content.decode()
+@pytest.fixture
+def user_content_type(db):
+    return ContentType.objects.get_for_model(User)
 
 
-def test_admin_logentry_list_view(admin_client, admin_user):
-    LogEntry.objects.create(
-        user_id=admin_user.id,
-        content_type_id=ContentType.objects.get_for_model(User).id,
-        object_id=admin_user.id,
-        object_repr=repr(admin_user),
-        action_flag=CHANGE,
-    )
+@pytest.fixture
+def make_entry(admin_user, user_content_type):
+    """Create a log entry, by default a change to the admin user."""
 
-    res = admin_client.get("/admin/admin/logentry/")
-    assert res.status_code == 200
-    assert "Log entries" in res.content.decode()
-
-
-def test_admin_logentry_list_view_filters(admin_client, admin_user):
-    LogEntry.objects.create(
-        user_id=admin_user.id,
-        content_type_id=ContentType.objects.get_for_model(User).id,
-        object_id=admin_user.id,
-        object_repr=repr(admin_user),
-        action_flag=CHANGE,
-    )
-
-    res = admin_client.get(
-        "/admin/admin/logentry/",
-        {
+    def _make_entry(**fields):
+        values = {
+            "user": admin_user,
+            "content_type": user_content_type,
+            "object_id": str(admin_user.pk),
+            "object_repr": "the object",
             "action_flag": CHANGE,
-            "user": admin_user.id,
-        },
+            **fields,
+        }
+        return LogEntry.objects.create(**values)
+
+    return _make_entry
+
+
+@pytest.fixture
+def make_staff_user(django_user_model):
+    """Create a staff user holding the given log entry permissions."""
+
+    def _make_staff_user(username, *codenames):
+        user = django_user_model.objects.create_user(username, is_staff=True)
+        user.user_permissions.set(
+            Permission.objects.filter(codename__in=codenames)
+        )
+        return user
+
+    return _make_staff_user
+
+
+def listed_reprs(response):
+    return {entry.object_repr for entry in response.context["cl"].result_list}
+
+
+def filter_choices(response, filter_class):
+    (spec,) = (
+        spec
+        for spec in response.context["cl"].filter_specs
+        if isinstance(spec, filter_class)
     )
-    assert res.status_code == 200
-    assert "Log entries" in res.content.decode()
+    return list(spec.lookup_choices)
 
 
-def test_object_link(admin, admin_user):
-    log_entry = LogEntry(
-        content_type_id=ContentType.objects.get_for_model(User).id,
-        action_flag=ADDITION,
-        object_id=admin_user.id,
-        object_repr="OBJ_REPR",
-    )
-    assert "OBJ_REPR" in admin.object_link(log_entry)
-    assert '<a href="' in admin.object_link(log_entry)
+class TestRegistration:
+    def test_log_entries_listed_on_admin_index(self, admin_client):
+        response = admin_client.get("/admin/")
+
+        assert response.status_code == 200
+        assert "Log entries" in response.content.decode()
+
+    def test_system_checks_pass(self, db):
+        assert run_checks() == []
 
 
-def test_object_link_deleted(admin, admin_user):
-    log_entry = LogEntry(object_repr="OBJ_REPR", action_flag=DELETION)
-    assert admin.object_link(log_entry) == "OBJ_REPR"
+class TestChangelist:
+    def test_lists_log_entries(self, admin_client, make_entry):
+        make_entry(object_repr="first")
+        make_entry(object_repr="second")
+
+        response = admin_client.get(CHANGELIST_URL)
+
+        assert response.status_code == 200
+        assert listed_reprs(response) == {"first", "second"}
+
+    def test_action_filter_offers_each_action(self, admin_client):
+        response = admin_client.get(CHANGELIST_URL)
+
+        choices = filter_choices(response, ActionListFilter)
+        assert [(value, str(label)) for value, label in choices] == [
+            (ADDITION, "Addition"),
+            (DELETION, "Deletion"),
+            (CHANGE, "Change"),
+        ]
+
+    def test_action_filter_shows_only_that_action(
+        self, admin_client, make_entry
+    ):
+        make_entry(object_repr="added", action_flag=ADDITION)
+        make_entry(object_repr="deleted", action_flag=DELETION)
+
+        response = admin_client.get(CHANGELIST_URL, {"action_flag": ADDITION})
+
+        assert listed_reprs(response) == {"added"}
+
+    def test_staff_user_filter_offers_only_staff(
+        self, admin_client, admin_user, django_user_model
+    ):
+        editor = django_user_model.objects.create_user("editor", is_staff=True)
+        django_user_model.objects.create_user("visitor")
+
+        response = admin_client.get(CHANGELIST_URL)
+
+        choices = filter_choices(response, UserListFilter)
+        assert choices == [(admin_user.pk, "admin"), (editor.pk, "editor")]
+
+    def test_staff_user_filter_shows_only_their_entries(
+        self, admin_client, make_entry, make_staff_user
+    ):
+        editor = make_staff_user("editor")
+        make_entry(object_repr="by admin")
+        make_entry(object_repr="by editor", user=editor)
+
+        response = admin_client.get(CHANGELIST_URL, {"user": editor.pk})
+
+        assert listed_reprs(response) == {"by editor"}
+
+    def test_search_matches_object_repr(self, admin_client, make_entry):
+        make_entry(object_repr="Invoice 17")
+        make_entry(object_repr="Order 4")
+
+        response = admin_client.get(CHANGELIST_URL, {"q": "invoice"})
+
+        assert listed_reprs(response) == {"Invoice 17"}
+
+    def test_offers_no_bulk_actions(self, admin_client, make_entry):
+        make_entry()
+
+        response = admin_client.get(CHANGELIST_URL)
+
+        assert response.context["action_form"] is None
 
 
-def test_object_link_no_reverse(admin, admin_user):
-    log_entry = LogEntry(
-        content_type_id=ContentType.objects.get(model="session").id,
-        action_flag=CHANGE,
-        object_id=5,
-        object_repr="OBJ_REPR",
-    )
-    assert admin.object_link(log_entry) == "OBJ_REPR"
+class TestDetailPage:
+    def test_shows_the_entry(self, admin_client, make_entry):
+        entry = make_entry(object_repr="Invoice 17")
+
+        response = admin_client.get(
+            reverse("admin:admin_logentry_change", args=[entry.pk])
+        )
+
+        assert response.status_code == 200
+        assert "Invoice 17" in response.content.decode()
+
+    def test_hides_the_history_link(self, admin_client, make_entry):
+        entry = make_entry()
+
+        response = admin_client.get(
+            reverse("admin:admin_logentry_change", args=[entry.pk])
+        )
+
+        history_url = reverse("admin:admin_logentry_history", args=[entry.pk])
+        assert history_url not in response.content.decode()
 
 
-def test_object_link_content_type_none(admin, admin_user):
-    """
-    Test reversion when content type is None (e.g. after deleting stale ones)
+class TestPermissions:
+    def test_user_with_view_permission_sees_the_log(
+        self, client, make_staff_user
+    ):
+        client.force_login(make_staff_user("viewer", "view_logentry"))
 
-    Regression test for issue #21
-    """
-    log_entry = LogEntry(
-        content_type_id=None,
-        action_flag=ADDITION,
-        object_id=admin_user.id,
-        object_repr="OBJ_REPR",
-    )
-    assert admin.object_link(log_entry) == "OBJ_REPR"
+        response = client.get(CHANGELIST_URL)
+
+        assert response.status_code == 200
+
+    def test_user_with_change_permission_sees_the_log(
+        self, client, make_staff_user
+    ):
+        client.force_login(make_staff_user("editor", "change_logentry"))
+
+        response = client.get(CHANGELIST_URL)
+
+        assert response.status_code == 200
+
+    def test_staff_user_without_permission_is_refused(
+        self, client, make_staff_user
+    ):
+        client.force_login(make_staff_user("intern"))
+
+        response = client.get(CHANGELIST_URL)
+
+        assert response.status_code == 403
+
+    def test_entries_cannot_be_changed(self, admin_client, make_entry):
+        entry = make_entry(object_repr="original")
+
+        response = admin_client.post(
+            reverse("admin:admin_logentry_change", args=[entry.pk]),
+            {"object_repr": "rewritten"},
+        )
+
+        assert response.status_code == 403
+        entry.refresh_from_db()
+        assert entry.object_repr == "original"
+
+    def test_entries_cannot_be_added(self, admin_client):
+        response = admin_client.get(reverse("admin:admin_logentry_add"))
+
+        assert response.status_code == 403
+
+    def test_entries_cannot_be_deleted(self, admin_client, make_entry):
+        entry = make_entry()
+
+        response = admin_client.post(
+            reverse("admin:admin_logentry_delete", args=[entry.pk]),
+            {"post": "yes"},
+        )
+
+        assert response.status_code == 403
+        assert LogEntry.objects.filter(pk=entry.pk).exists()
 
 
-def test_user_link(admin_user):
-    admin = LogEntryAdmin(LogEntry, AdminSite())
-    logentry = LogEntry(
-        object_repr="OBJ_REPR", action_flag=DELETION, user_id=admin_user.id
-    )
+class TestObjectLink:
+    def test_links_to_the_object(self, model_admin, make_entry, admin_user):
+        entry = make_entry(object_repr="admin", action_flag=ADDITION)
 
-    assert '<a href="' in admin.user_link(logentry)
-    assert admin_user.username in admin.user_link(logentry)
+        link = model_admin.object_link(entry)
+
+        url = reverse("admin:auth_user_change", args=[admin_user.pk])
+        assert link == f'<a href="{url}">admin</a>'
+
+    def test_deleted_object_is_not_linked(self, model_admin, make_entry):
+        entry = make_entry(object_repr="gone", action_flag=DELETION)
+
+        assert model_admin.object_link(entry) == "gone"
+
+    def test_object_outside_the_admin_is_not_linked(
+        self, model_admin, make_entry
+    ):
+        entry = make_entry(
+            content_type=ContentType.objects.get(model="session"),
+            object_id="5",
+            object_repr="a session",
+        )
+
+        assert model_admin.object_link(entry) == "a session"
+
+    def test_entry_without_content_type_is_not_linked(
+        self, model_admin, make_entry
+    ):
+        """Content types can be deleted as stale (issue #21)."""
+        entry = make_entry(content_type=None, object_repr="orphan")
+
+        assert model_admin.object_link(entry) == "orphan"
+
+    def test_object_repr_is_escaped(self, model_admin, make_entry):
+        entry = make_entry(object_repr="<b>bold</b>", action_flag=DELETION)
+
+        assert model_admin.object_link(entry) == "&lt;b&gt;bold&lt;/b&gt;"
+
+
+class TestUserLink:
+    def test_links_to_the_user(self, model_admin, make_entry, admin_user):
+        entry = make_entry()
+
+        link = model_admin.user_link(entry)
+
+        url = reverse("admin:auth_user_change", args=[admin_user.pk])
+        assert link == f'<a href="{url}">admin</a>'
+
+    @pytest.mark.urls("tests.urls_without_user_admin")
+    def test_user_outside_the_admin_is_not_linked(
+        self, model_admin, make_entry
+    ):
+        entry = make_entry()
+
+        assert model_admin.user_link(entry) == "admin"
+
+    def test_username_is_escaped(
+        self, model_admin, make_entry, make_staff_user
+    ):
+        entry = make_entry(user=make_staff_user("<i>me</i>"))
+
+        assert "&lt;i&gt;me&lt;/i&gt;" in model_admin.user_link(entry)
+
+
+@pytest.mark.parametrize(
+    ("action_flag", "description"),
+    [(ADDITION, "Addition"), (CHANGE, "Change"), (DELETION, "Deletion")],
+)
+def test_action_description(model_admin, action_flag, description):
+    entry = LogEntry(action_flag=action_flag)
+
+    assert model_admin.action_description(entry) == description
