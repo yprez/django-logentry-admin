@@ -20,7 +20,7 @@ def test_admin_list_apps(admin_client):
 
 
 def test_admin_logentry_list_view(admin_client, admin_user):
-    LogEntry.objects.log_action(
+    LogEntry.objects.create(
         user_id=admin_user.id,
         content_type_id=ContentType.objects.get_for_model(User).id,
         object_id=admin_user.id,
@@ -34,7 +34,7 @@ def test_admin_logentry_list_view(admin_client, admin_user):
 
 
 def test_admin_logentry_list_view_filters(admin_client, admin_user):
-    LogEntry.objects.log_action(
+    LogEntry.objects.create(
         user_id=admin_user.id,
         content_type_id=ContentType.objects.get_for_model(User).id,
         object_id=admin_user.id,
