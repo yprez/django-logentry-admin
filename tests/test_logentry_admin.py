@@ -9,6 +9,7 @@ from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 
 from logentry_admin.admin import ActionListFilter, UserListFilter
+from tests.urls import other_site
 
 CHANGELIST_URL = "/admin/admin/logentry/"
 
@@ -279,6 +280,14 @@ class TestObjectLink:
         url = reverse("admin:auth_user_change", args=[admin_user.pk])
         assert link == f'<a href="{url}">admin</a>'
 
+    def test_links_within_its_own_admin_site(self, make_entry, admin_user):
+        entry = make_entry(object_repr="admin")
+
+        link = other_site.get_model_admin(LogEntry).object_link(entry)
+
+        url = reverse("other_admin:auth_user_change", args=[admin_user.pk])
+        assert link == f'<a href="{url}">admin</a>'
+
     def test_deleted_object_is_not_linked(self, model_admin, make_entry):
         entry = make_entry(object_repr="gone", action_flag=DELETION)
 
@@ -316,6 +325,14 @@ class TestUserLink:
         link = model_admin.user_link(entry)
 
         url = reverse("admin:auth_user_change", args=[admin_user.pk])
+        assert link == f'<a href="{url}">admin</a>'
+
+    def test_links_within_its_own_admin_site(self, make_entry, admin_user):
+        entry = make_entry()
+
+        link = other_site.get_model_admin(LogEntry).user_link(entry)
+
+        url = reverse("other_admin:auth_user_change", args=[admin_user.pk])
         assert link == f'<a href="{url}">admin</a>'
 
     @pytest.mark.urls("tests.urls_without_user_admin")

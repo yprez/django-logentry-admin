@@ -116,7 +116,8 @@ class LogEntryAdmin(admin.ModelAdmin):
             # try returning an actual link instead of object repr string
             try:
                 url = reverse(
-                    f"admin:{content_type.app_label}_{content_type.model}_change",
+                    f"{self.admin_site.name}:"
+                    f"{content_type.app_label}_{content_type.model}_change",
                     args=[obj.object_id],
                 )
                 object_link = f'<a href="{url}">{object_link}</a>'
@@ -133,7 +134,8 @@ class LogEntryAdmin(admin.ModelAdmin):
         try:
             # try returning an actual link instead of object repr string
             url = reverse(
-                f"admin:{content_type.app_label}_{content_type.model}_change",
+                f"{self.admin_site.name}:"
+                f"{content_type.app_label}_{content_type.model}_change",
                 args=[obj.user.pk],
             )
             user_link = f'<a href="{url}">{user_link}</a>'
