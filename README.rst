@@ -19,19 +19,19 @@ Supported versions
 Installation
 ============
 
-Install by using pip or easy_install:
+Install with pip:
 
 .. code-block:: bash
 
-  pip install django-logentry-admin
+    pip install django-logentry-admin
 
 Or install from source:
 
 .. code-block:: bash
 
-    git clone git@github.com:yprez/django-logentry-admin.git
+    git clone https://github.com/yprez/django-logentry-admin.git
     cd django-logentry-admin
-    python setup.py install
+    pip install .
 
 To add this application into your project, just add it to your ``INSTALLED_APPS`` setting:
 
