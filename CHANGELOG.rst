@@ -15,8 +15,8 @@ v1.2.0 - unreleased
 * Show each log entry on a read-only page, without Save buttons.
 * Fetch each entry's user with the list on Django 6.1, which stopped
   joining it on its own and ran one query per row.
-* Fix links on a custom admin site mounted beside the default one, which
-  led to the default site.
+* Fix links in a project with more than one admin site, which could lead
+  to another site than the one in use.
 * Fix links to objects whose text primary key contains a sequence the
   admin escapes, such as "_26".
 * Fix the staff user filter for custom user models whose primary key is
