@@ -30,6 +30,15 @@ jobs:
             echo "::error::Release tag $TAG does not match version $version"
             exit 1
           fi
+      # The changelog is part of the PyPI description, which an upload
+      # cannot change afterwards.
+      - name: Check the changelog dates this version
+        run: |
+          version="$(uv version --short)"
+          if ! grep -qE "^v${version//./\\.} - [0-9]{2}/[0-9]{2}/[0-9]{4}$" CHANGELOG.rst; then
+            echo "::error::CHANGELOG.rst has no dated v$version heading"
+            exit 1
+          fi
       - name: Build the sdist and wheel
         run: uv build
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2

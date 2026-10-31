@@ -91,9 +91,11 @@ and ``.mo`` files; CI checks that they match:
     uv run django-admin makemessages --all
     uv run django-admin compilemessages
 
-To release, set the new version in ``pyproject.toml`` and the changelog,
-merge, then publish a GitHub release tagged ``v<version>``. The release
-workflow builds it and uploads it to PyPI.
+To release, set the new version in ``pyproject.toml``, give it a dated
+heading in the changelog (``v1.2.0 - 02/11/2026``), merge, then publish
+a GitHub release tagged ``v<version>``. The release workflow refuses a
+version whose changelog heading has no date, then builds it and uploads
+it to PyPI.
 
 
 .. |ci| image:: https://github.com/yprez/django-logentry-admin/actions/workflows/ci.yml/badge.svg?branch=main
