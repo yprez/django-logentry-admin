@@ -31,6 +31,10 @@ jobs:
             sudo apt-get update -q
             sudo apt-get install -qy --no-install-recommends gettext
           }
+          # compilemessages skips a catalog whose .mo is not older than
+          # its .po, which a fresh checkout can make true. Deleting them
+          # makes it compile every one, and a missing .mo fails too.
+          find src/logentry_admin/locale -name '*.mo' -delete
           (cd src/logentry_admin && uv run --locked django-admin compilemessages)
           git status --porcelain --untracked-files=all -- src/logentry_admin/locale
           test -z "$(git status --porcelain --untracked-files=all -- src/logentry_admin/locale)"
