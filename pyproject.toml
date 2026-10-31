@@ -42,6 +42,7 @@ dev = [
     "coverage>=7.10",
     "pytest>=9.0",
     "pytest-django>=4.11",
+    "ruff>=0.17.3",
 ]
 
 [tool.setuptools]
@@ -65,6 +66,24 @@ pythonpath = ["."]
 addopts = ["--strict-config", "--strict-markers"]
 testpaths = ["tests"]
 xfail_strict = true
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = [
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "DJ",   # flake8-django
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "PT",   # flake8-pytest-style
+    "RUF",  # ruff-specific rules
+    "SIM",  # flake8-simplify
+    "UP",   # pyupgrade
+]
 
 [tool.coverage.run]
 branch = true

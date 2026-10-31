@@ -1,9 +1,8 @@
+import pytest
+from django.contrib.admin.models import ADDITION, CHANGE, DELETION, LogEntry
 from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
-
-import pytest
 
 from logentry_admin.admin import LogEntryAdmin
 

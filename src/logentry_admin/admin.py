@@ -1,14 +1,13 @@
 from django.contrib import admin
-from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from django.contrib.admin.models import ADDITION, CHANGE, DELETION, LogEntry
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
-from django.urls import reverse, NoReverseMatch
+from django.urls import NoReverseMatch, reverse
 from django.utils.encoding import force_str
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
-
 
 action_names = {
     ADDITION: pgettext_lazy('logentry_admin:action_type', 'Addition'),
@@ -74,29 +73,29 @@ class LogEntryAdmin(admin.ModelAdmin):
         }),
     )
 
-    list_filter = [
+    list_filter = (
         UserListFilter,
         'content_type',
-        ActionListFilter
-    ]
+        ActionListFilter,
+    )
 
-    search_fields = [
+    search_fields = (
         'object_repr',
-        'change_message'
-    ]
+        'change_message',
+    )
 
-    list_display_links = [
+    list_display_links = (
         'action_time',
         'get_change_message',
-    ]
-    list_display = [
+    )
+    list_display = (
         'action_time',
         'user_link',
         'content_type',
         'object_link',
         'action_description',
         'get_change_message',
-    ]
+    )
 
     def has_add_permission(self, request):
         return False
@@ -118,11 +117,10 @@ class LogEntryAdmin(admin.ModelAdmin):
             # try returning an actual link instead of object repr string
             try:
                 url = reverse(
-                    'admin:{}_{}_change'.format(content_type.app_label,
-                                                content_type.model),
+                    f'admin:{content_type.app_label}_{content_type.model}_change',
                     args=[obj.object_id]
                 )
-                object_link = '<a href="{}">{}</a>'.format(url, object_link)
+                object_link = f'<a href="{url}">{object_link}</a>'
             except NoReverseMatch:
                 pass
         return mark_safe(object_link)
@@ -135,11 +133,10 @@ class LogEntryAdmin(admin.ModelAdmin):
         try:
             # try returning an actual link instead of object repr string
             url = reverse(
-                'admin:{}_{}_change'.format(content_type.app_label,
-                                            content_type.model),
+                f'admin:{content_type.app_label}_{content_type.model}_change',
                 args=[obj.user.pk]
             )
-            user_link = '<a href="{}">{}</a>'.format(url, user_link)
+            user_link = f'<a href="{url}">{user_link}</a>'
         except NoReverseMatch:
             pass
         return mark_safe(user_link)
@@ -147,11 +144,11 @@ class LogEntryAdmin(admin.ModelAdmin):
     user_link.short_description = _('user')
 
     def get_queryset(self, request):
-        queryset = super(LogEntryAdmin, self).get_queryset(request)
+        queryset = super().get_queryset(request)
         return queryset.prefetch_related('content_type')
 
     def get_actions(self, request):
-        actions = super(LogEntryAdmin, self).get_actions(request)
+        actions = super().get_actions(request)
         actions.pop('delete_selected', None)
         return actions
 
