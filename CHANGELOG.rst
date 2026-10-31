@@ -3,6 +3,29 @@ Changelog
 =========
 
 
+v1.2.0 - 31/10/2026
+===================
+
+* Add support for Django 5.2, 6.0 and 6.1, and Python 3.10 to 3.14.
+* Drop support for Django older than 5.2 and Python older than 3.10.
+* Fix change messages showing as raw JSON (a regression in 1.1.0).
+* Fix the translations, which never loaded: no release shipped the
+  compiled catalogs.
+* Fix the spelling of "Adição" in the Brazilian Portuguese translation.
+* Show each log entry on a read-only page, without Save buttons.
+* Fetch each entry's user with the list on Django 6.1, which stopped
+  joining it on its own and ran one query per row.
+* Fix links in a project with more than one admin site, which could lead
+  to another site than the one in use.
+* Fix links to objects whose text primary key contains a sequence the
+  admin escapes, such as "_26".
+* Fix the staff user filter for custom user models whose primary key is
+  not named ``id``.
+* Remove the ``get_actions()`` override that Django 6.1 deprecates.
+* Package with ``pyproject.toml``, test on GitHub Actions, and publish to
+  PyPI through trusted publishing.
+
+
 v1.1.0 - 25/05/2021
 ===================
 

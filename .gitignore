@@ -2,9 +2,8 @@
 *.db
 *.egg-info
 .coverage
-.tox
-.cache
 .pytest_cache
+.venv
 __pycache__
 
 /MANIFEST

@@ -1,0 +1,29 @@
+version: 2
+
+updates:
+  # The lockfile only pins the development tools. Version updates stay
+  # off (a limit of 0 disables them, not security updates); advisories
+  # still open a pull request, grouped into one.
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
+    groups:
+      python-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+
+  # Actions are pinned by commit; this keeps the pins and their version
+  # comments current, a week after each release.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    cooldown:
+      default-days: 7

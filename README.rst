@@ -2,80 +2,105 @@
 django-logentry-admin
 =====================
 
-|travis-ci| |coverage| |requires-io| |pypi-version|
+|ci| |pypi-version|
 
 Show all LogEntry objects in the Django admin site.
 
-Originally based on: `Django snippet 2484 <http://djangosnippets.org/snippets/2484/>`_
+Django records every addition, change and deletion made through the
+admin, but only shows each user their own last few actions. This app
+adds the whole log to the admin:
+
+* a list of every entry, filtered by staff user, content type and
+  action, searchable by object and change message, and browsable by
+  date
+* links from each entry to the object and the user it concerns, on
+  the admin site you are using
+* a read-only page per entry, since the log is a record: entries cannot
+  be added, changed or deleted
+
+Superusers see the log, and so do staff users with the "Can view log
+entry" or "Can change log entry" permission. Either one only lets them
+read it.
+
+Originally based on `Django snippet 2484 <https://djangosnippets.org/snippets/2484/>`_.
 
 
 Supported versions
 ==================
 
-* Django 3.2, 3.1, 2.2
-* Python 3.9, 3.8, 3.7, 3.6, 3.5
+* Django 5.2, 6.0, 6.1
+* Python 3.10 to 3.14 (Django 6.0 and later need Python 3.12 or later)
 
 
 Installation
 ============
 
-Install by using pip or easy_install:
+Install with pip:
 
 .. code-block:: bash
 
-  pip install django-logentry-admin
+    pip install django-logentry-admin
 
 Or install from source:
 
 .. code-block:: bash
 
-    git clone git@github.com:yprez/django-logentry-admin.git
+    git clone https://github.com/yprez/django-logentry-admin.git
     cd django-logentry-admin
-    python setup.py install
+    pip install .
 
-To add this application into your project, just add it to your ``INSTALLED_APPS`` setting:
+Then add it to ``INSTALLED_APPS``:
 
 .. code-block:: python
 
-    INSTALLED_APPS = (
+    INSTALLED_APPS = [
         ...
-        'logentry_admin',
-    )
+        "logentry_admin",
+    ]
+
+The log appears in the admin under "Administration", as "Log entries".
+It is translated into Azerbaijani, Brazilian Portuguese, Esperanto and
+Russian.
 
 
+Development
+===========
 
-Running tests
-=============
-
-Test on all Python / Django versions with tox:
-
-.. code-block:: bash
-
-   $ pip install tox
-   $ tox
-
-Or just a specific Django / Python version:
+The project uses `uv <https://docs.astral.sh/uv/>`_. Set up the
+environment and run the tests with coverage:
 
 .. code-block:: bash
 
-    $ tox -e py35-django19
+    uv sync
+    uv run coverage run -m pytest
+    uv run coverage report
 
-Or run on multiple CPUs in parallel with detox to make it faster:
+Run them against a particular Python and Django version, in a throwaway
+environment that leaves the one above as it is:
 
 .. code-block:: bash
 
-    $ pip install detox
-    $ detox
+    uv run --isolated --python 3.12 --with "django~=5.2.0" pytest
+
+The translations need GNU gettext. After changing a message in the code,
+update the catalogs, translate, compile them and commit both the ``.po``
+and ``.mo`` files; CI checks that they match:
+
+.. code-block:: bash
+
+    cd src/logentry_admin
+    uv run django-admin makemessages --all
+    uv run django-admin compilemessages
+
+To release, set the new version in ``pyproject.toml``, give it a dated
+heading in the changelog (``v1.2.0 - 02/11/2026``), merge, then publish
+a GitHub release tagged ``v<version>``. The release workflow refuses a
+version whose changelog heading has no date, then builds it and uploads
+it to PyPI.
 
 
-.. |travis-ci| image:: http://img.shields.io/travis/yprez/django-logentry-admin/master.svg?style=flat
-   :target: http://travis-ci.org/yprez/django-logentry-admin
+.. |ci| image:: https://github.com/yprez/django-logentry-admin/actions/workflows/ci.yml/badge.svg?branch=main
+    :target: https://github.com/yprez/django-logentry-admin/actions/workflows/ci.yml
 
-.. |coverage| image:: https://img.shields.io/coveralls/yprez/django-logentry-admin.svg?branch=master
-   :target: https://coveralls.io/r/yprez/django-logentry-admin?branch=coveralls
-
-.. |pypi-version| image:: http://img.shields.io/pypi/v/django-logentry-admin.svg?style=flat
-    :target: https://pypi.python.org/pypi/django-logentry-admin
-
-.. |requires-io| image:: https://img.shields.io/requires/github/yprez/django-logentry-admin.svg
-    :target: https://requires.io/github/yprez/django-logentry-admin/requirements/?branch=master
+.. |pypi-version| image:: https://img.shields.io/pypi/v/django-logentry-admin.svg
+    :target: https://pypi.org/project/django-logentry-admin/

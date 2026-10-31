@@ -1,0 +1,102 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-logentry-admin"
+version = "1.2.0"
+description = "Show all LogEntry objects in the Django admin site."
+dynamic = ["readme"]
+license = "ISC"
+license-files = ["LICENSE.txt"]
+authors = [{ name = "Yuri Prezument", email = "y@yprez.com" }]
+requires-python = ">=3.10"
+dependencies = ["Django>=5.2"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
+    "Framework :: Django :: 6.1",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+
+[project.urls]
+Homepage = "https://github.com/yprez/django-logentry-admin"
+Changelog = "https://github.com/yprez/django-logentry-admin/blob/main/CHANGELOG.rst"
+Issues = "https://github.com/yprez/django-logentry-admin/issues"
+
+[dependency-groups]
+dev = [
+    "coverage>=7.10",
+    "pytest>=9.0",
+    "pytest-django>=4.11",
+    "ruff>=0.17.3",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["logentry_admin"]
+
+[tool.setuptools.dynamic]
+readme = { file = ["README.rst", "CHANGELOG.rst"], content-type = "text/x-rst" }
+
+[tool.setuptools.package-data]
+logentry_admin = [
+    "templates/admin/admin/logentry/*.html",
+    "locale/*/LC_MESSAGES/*.po",
+    "locale/*/LC_MESSAGES/*.mo",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+django_find_project = false
+pythonpath = ["."]
+addopts = ["--strict-config", "--strict-markers"]
+testpaths = ["tests"]
+xfail_strict = true
+# A deprecation warning from Django fails the run, so an upcoming
+# removal shows up while the old API still works.
+filterwarnings = ["error"]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = [
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "DJ",   # flake8-django
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "PT",   # flake8-pytest-style
+    "RUF",  # ruff-specific rules
+    "SIM",  # flake8-simplify
+    "UP",   # pyupgrade
+]
+ignore = [
+    # Django's options are class-level lists by convention, and projects
+    # extend them in subclasses with +, which a tuple would break.
+    "RUF012",
+]
+
+[tool.coverage.run]
+branch = true
+source_pkgs = ["logentry_admin"]
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
