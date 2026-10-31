@@ -14,6 +14,7 @@ from django.utils import translation
 
 from logentry_admin.admin import (
     ActionListFilter,
+    LogEntryAdmin,
     UserListFilter,
     action_names,
 )
@@ -87,6 +88,20 @@ class TestRegistration:
 
     def test_system_checks_pass(self, db):
         assert run_checks() == []
+
+    @pytest.mark.parametrize(
+        "option",
+        [
+            "list_display",
+            "list_display_links",
+            "list_filter",
+            "readonly_fields",
+            "search_fields",
+        ],
+    )
+    def test_list_options_stay_lists(self, option):
+        """Subclasses extend them with +, as in list_display + ["ip"]."""
+        assert isinstance(getattr(LogEntryAdmin, option), list)
 
 
 class TestChangelist:

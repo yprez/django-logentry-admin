@@ -56,6 +56,15 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     date_hierarchy = "action_time"
 
+    # The page is read-only without it, since change permission is always
+    # refused. It stays for subclasses that build on it.
+    readonly_fields = [f.name for f in LogEntry._meta.fields] + [
+        "object_link",
+        "action_description",
+        "user_link",
+        "get_change_message",
+    ]
+
     fieldsets = (
         (
             _("Metadata"),
@@ -81,31 +90,31 @@ class LogEntryAdmin(admin.ModelAdmin):
         ),
     )
 
-    list_filter = (
+    list_filter = [
         UserListFilter,
         "content_type",
         ActionListFilter,
-    )
+    ]
 
-    search_fields = (
+    search_fields = [
         "object_repr",
         "change_message",
-    )
+    ]
 
-    list_select_related = ("content_type", "user")
+    list_select_related = ["content_type", "user"]
 
-    list_display_links = (
+    list_display_links = [
         "action_time",
         "get_change_message",
-    )
-    list_display = (
+    ]
+    list_display = [
         "action_time",
         "user_link",
         "content_type",
         "object_link",
         "action_description",
         "get_change_message",
-    )
+    ]
 
     def has_add_permission(self, request):
         return False

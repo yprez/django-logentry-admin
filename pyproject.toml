@@ -87,6 +87,11 @@ select = [
     "SIM",  # flake8-simplify
     "UP",   # pyupgrade
 ]
+ignore = [
+    # Django's options are class-level lists by convention, and projects
+    # extend them in subclasses with +, which a tuple would break.
+    "RUF012",
+]
 
 [tool.coverage.run]
 branch = true
