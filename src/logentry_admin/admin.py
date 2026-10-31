@@ -35,7 +35,7 @@ class UserListFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         staff = get_user_model().objects.filter(is_staff=True)
-        return ((s.id, force_str(s)) for s in staff)
+        return ((s.pk, force_str(s)) for s in staff)
 
     def queryset(self, request, queryset):
         if self.value():

@@ -5,10 +5,12 @@ from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.checks import run_checks
 from django.db import connection
+from django.test import override_settings
 from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 
 from logentry_admin.admin import ActionListFilter, UserListFilter
+from tests.models import Member
 from tests.urls import other_site
 
 CHANGELIST_URL = "/admin/admin/logentry/"
@@ -120,6 +122,17 @@ class TestChangelist:
 
         choices = filter_choices(response, UserListFilter)
         assert choices == [(admin_user.pk, "admin"), (editor.pk, "editor")]
+
+    @override_settings(AUTH_USER_MODEL="tests.Member")
+    def test_staff_user_filter_works_with_a_custom_user_model(
+        self, model_admin, rf, db
+    ):
+        staff = Member.objects.create(name="boss", is_staff=True)
+        Member.objects.create(name="guest")
+
+        user_filter = UserListFilter(rf.get("/"), {}, LogEntry, model_admin)
+
+        assert user_filter.lookup_choices == [(staff.pk, "boss")]
 
     def test_staff_user_filter_shows_only_their_entries(
         self, admin_client, make_entry, make_staff_user

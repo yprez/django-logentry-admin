@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.sessions",
     "logentry_admin",
+    "tests",
 ]
 
 MIDDLEWARE = [
