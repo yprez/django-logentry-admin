@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-logentry-admin"
-version = "1.1.0"
+version = "1.2.0"
 description = "Show all LogEntry objects in the Django admin site."
 dynamic = ["readme"]
 license = "ISC"
